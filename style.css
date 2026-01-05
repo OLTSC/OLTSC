@@ -101,22 +101,18 @@ input:focus, select:focus, textarea:focus {
     justify-content: center; 
 }
 
-/* --- ALERTA CENTRALIZADA Y CABRONA --- */
 .custom-alert {
     position: fixed;
     top: 50%;
     left: 50%;
-    /* Empieza invisible y pequeña en el centro */
     transform: translate(-50%, -50%) scale(0.5);
     opacity: 0;
     visibility: hidden;
     
-    /* Fondo con gradiente animado autónomo */
     background: linear-gradient(135deg, #2d1a1a 0%, #611a1a 50%, #2d1a1a 100%);
     background-size: 200% 200%;
     animation: alert-bg-move 3s ease infinite;
     
-    /* Diseño Asimétrico */
     border: 2px solid #f85149;
     border-radius: 4px 30px 4px 30px; 
     
@@ -126,9 +122,8 @@ input:focus, select:focus, textarea:focus {
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 0.25em;
-    z-index: 11000; /* Por encima de los modales (9999) */
+    z-index: 11000;
     
-    /* Sombra masiva para resaltar sobre todo */
     box-shadow: 0 0 100px rgba(0,0,0,0.9), 0 0 40px rgba(248, 81, 73, 0.4);
     
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -148,14 +143,12 @@ input:focus, select:focus, textarea:focus {
     visibility: visible;
 }
 
-/* Parpadeo para el icono central */
 .custom-alert i {
     width: 48px;
     height: 48px;
     animation: alert-icon-blink 0.8s infinite;
 }
 
-/* Animación del fondo solo */
 @keyframes alert-bg-move {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
@@ -167,7 +160,6 @@ input:focus, select:focus, textarea:focus {
     50% { transform: scale(1.1); filter: drop-shadow(0 0 5px #f85149); }
 }
 
-/* ---------------------------------- */
 
 .admin-only, .colab-only { display: none !important; }
 body.is-admin .admin-only, body.is-admin .colab-only { display: flex !important; }
@@ -302,6 +294,7 @@ footer button:hover i[data-lucide="cpu"] {
     text-transform: uppercase;
     font-weight: 800;
     letter-spacing: 0.05em;
+    margin-bottom: 3rem;
 }
 
 .btn-solicitud-asimetrico i {
@@ -335,7 +328,6 @@ footer button:hover i[data-lucide="cpu"] {
     left: 100%;
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
     .btn-solicitud-asimetrico {
         border-radius: 12px 28px 12px 28px !important; 
@@ -526,8 +518,12 @@ body.system-error #musicStatus {
 .social-telegram:hover { background: rgba(56, 189, 248, 0.1); box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); color: #38bdf8 !important; }
 
 .header-master-container {
-    padding-top: clamp(2rem, 10vh, 10rem);
+    padding-top: 1.5rem;
     transition: all 0.5s ease;
+}
+
+.header-master-container h2 {
+    line-height: 0.9;
 }
 
 @keyframes pulse-slow {
@@ -548,4 +544,4 @@ body.system-error #musicStatus {
     .header-master-container h2 {
         font-size: 5.5rem;
     }
-}
+} 
