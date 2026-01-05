@@ -26,26 +26,32 @@
         </div>
     </div>
 
-    <div id="loginModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-xl" onclick="closeModal('loginModal')"></div>
-        <div class="bg-[#161b22] border border-[#30363d] w-full max-w-sm rounded-[2.5rem] p-10 relative shadow-2xl text-center transform transition-all">
-            <div class="w-16 h-16 bg-blue-600/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <i data-lucide="lock" class="text-blue-500 w-8 h-8"></i>
-            </div>
-            <h2 class="text-2xl font-black text-white mb-2 uppercase">Autenticación</h2>
-            <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-8 leading-relaxed">Introduzca su clave de acceso <br> para el Repositorio Maestro</p>
-            
-            <input type="password" id="loginPassInput" placeholder="••••••••" 
-                class="w-full px-6 py-5 rounded-2xl text-center text-2xl tracking-[0.5em] mb-6 border border-[#30363d] bg-[#0d1117] outline-none text-white focus:border-blue-500 transition-all">
-            
-            <button onclick="processLogin()" class="w-full bg-blue-600 hover:bg-blue-700 py-5 rounded-2xl font-black uppercase tracking-widest transition-all shadow-lg shadow-blue-900/40 active:scale-95">
-                Verificar Identidad
-            </button>
-            <button onclick="closeModal('loginModal')" class="mt-6 text-slate-500 text-[10px] font-black hover:text-white uppercase tracking-widest transition-colors">
-                Cancelar Acceso
-            </button>
+<div id="loginModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/95 backdrop-blur-md" onclick="closeModal('loginModal')"></div>
+    
+    <div class="bg-[#161b22] border border-[#30363d] w-full max-w-[340px] rounded-tr-[3rem] rounded-bl-[3rem] rounded-tl-[1rem] rounded-br-[1rem] p-8 relative shadow-2xl text-center transform transition-all border-t-blue-500/30">
+        
+        <div class="w-12 h-12 bg-blue-600/5 border border-blue-500/20 rounded-xl flex items-center justify-center mx-auto mb-5 shadow-inner">
+            <i data-lucide="shield-check" class="text-blue-500 w-5 h-5"></i>
         </div>
+
+        <h2 class="text-xl font-black text-white mb-1 uppercase tracking-tighter">Acceso Seguro</h2>
+        <p class="text-slate-500 text-[9px] font-black uppercase tracking-[0.2em] mb-6 leading-none">Protocolo de Verificación LTSC</p>
+        
+        <input type="password" id="loginPassInput" placeholder="••••" 
+            class="w-full px-4 py-3 rounded-xl text-center text-xl tracking-[0.4em] mb-4 border border-[#30363d] bg-[#0d1117] outline-none text-white focus:border-blue-500/50 transition-all placeholder:text-slate-800">
+        
+        <button onclick="processLogin()" 
+            class="btn-verify-asimetrico w-full py-4 rounded-tr-2xl rounded-bl-2xl rounded-tl-md rounded-br-md font-black uppercase text-[11px] tracking-[0.2em] transition-all flex items-center justify-center gap-2 active:scale-95 shadow-lg shadow-blue-900/20">
+            <span>Verificar Identidad</span>
+            <i data-lucide="chevron-right" class="w-3 h-3"></i>
+        </button>
+
+        <button onclick="closeModal('loginModal')" class="mt-6 text-slate-600 text-[9px] font-black hover:text-blue-400 uppercase tracking-widest transition-colors block mx-auto">
+            [ Cancelar Operación ]
+        </button>
     </div>
+</div>
 
     <header class="fixed w-full top-0 z-50 bg-[#0a0c10]/80 backdrop-blur-xl border-b border-[#30363d]">
         <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
@@ -153,9 +159,10 @@
                         <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-4">Propuesta de colaboración</label>
                         <textarea name="Mensaje" placeholder="¿Qué tipo de plantillas deseas compartir?" rows="4" class="w-full px-6 py-4 rounded-2xl bg-[#0d1117] border border-[#30363d] outline-none"></textarea>
                     </div>
-                    <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 py-5 rounded-2xl font-black uppercase tracking-widest transition-all shadow-xl shadow-blue-900/20 flex items-center justify-center gap-3 active:scale-[0.98]">
-                        <i data-lucide="send" class="w-5 h-5"></i> Enviar Solicitud de Acceso
-                    </button>
+<button type="submit" class="btn-solicitud-asimetrico group w-full py-5 rounded-tr-[2rem] rounded-bl-[2rem] rounded-tl-lg rounded-br-lg font-black uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3 active:scale-[0.98]">
+    <i data-lucide="send" class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i> 
+    <span>Enviar Solicitud de Acceso</span>
+</button>
                 </form>
             </div>
         </section>
@@ -291,7 +298,7 @@
         <div class="mt-10 pt-6 border-t border-[#30363d] flex flex-col sm:flex-row gap-4 justify-between items-center">
             <a href="ACCIONES LEGALES OLTSC.pdf" download class="flex items-center gap-3 bg-white text-black px-6 py-4 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-red-600 hover:text-white transition-all shadow-xl active:scale-95 group">
                 <i data-lucide="file-warning" class="w-5 h-5 group-hover:animate-bounce"></i> 
-                Descargar Expediente de Acciones Penales
+                Descargar Expediente de Acciones Legales OLTSC
             </a>
             
             <button onclick="closeModal('creatorModal')" class="text-slate-500 hover:text-white font-black uppercase text-[10px] tracking-widest transition-all">
@@ -310,11 +317,39 @@
             <p class="text-slate-500 text-[11px] font-bold uppercase tracking-widest text-center">
                 &copy; 2021-2026 Todos los Derechos Reservados por <span class="text-white">Angel Chavarría</span>
             </p>
-            <div class="flex gap-8">
-                <a href="#" class="text-slate-500 hover:text-green-500 transition-all transform hover:scale-125"><i data-lucide="message-circle" class="w-6 h-6"></i></a>
-                <a href="#" class="text-slate-500 hover:text-blue-600 transition-all transform hover:scale-125"><i data-lucide="facebook" class="w-6 h-6"></i></a>
-                <a href="#" class="text-slate-500 hover:text-sky-400 transition-all transform hover:scale-125"><i data-lucide="send" class="w-6 h-6"></i></a>
-            </div>
+<div class="flex gap-6">
+    <a href="https://whatsapp.com/channel/0029VbBvbRVGOj9fYAT9EF02" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="social-link social-whatsapp" 
+       title="WhatsApp">
+        <i data-lucide="message-circle" class="w-6 h-6"></i>
+    </a>
+
+    <a href="https://www.facebook.com/share/17LKDP4xow/" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="social-link social-facebook" 
+       title="Facebook">
+        <i data-lucide="facebook" class="w-6 h-6"></i>
+    </a>
+
+    <a href="https://youtube.com/@tuangelitoguardian?si=SlRsDtQGAkva7gST" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="social-link social-youtube" 
+       title="YouTube">
+        <i data-lucide="youtube" class="w-6 h-6"></i>
+    </a>
+
+    <a href="t.me/OLTSC2024" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="social-link social-telegram" 
+       title="Telegram">
+        <i data-lucide="send" class="w-6 h-6"></i>
+    </a>
+</div>
         </div>
     </footer>
 
@@ -375,9 +410,25 @@
 
     <div id="errorAlert" class="custom-alert">
         <i data-lucide="shield-alert" class="w-5 h-5"></i>
-        <span>PIN INCORRECTO - ACCESO DENEGADO</span>
+        <span>PIN INCORRECTO <br> ACCESO DENEGADO</span>
     </div>
 
     <script src="script.js"></script>
+
+<div id="audioContainer" class="fixed bottom-6 left-6 z-[11001] flex items-center gap-3">
+    <button id="musicToggle" class="music-btn" onclick="toggleMusic()">
+        <i data-lucide="music" id="musicIcon" class="w-5 h-5"></i>
+        <div class="music-waves">
+            <span></span><span></span><span></span>
+        </div>
+    </button>
+    <div class="flex flex-col">
+        <span id="musicStatus" class="text-[8px] font-black uppercase tracking-[0.2em] text-slate-500">System Audio</span>
+        <span id="trackName" class="text-[7px] text-slate-600 font-bold truncate w-24">AMBIE-TECH v1.0</span>
+    </div>
+    <audio id="bgMusic" loop>
+        <source src="SAINt JHN - Roses (Imanbek Remix) (Official Music Video).mp3" type="audio/mpeg">
+    </audio>
+</div>
 </body>
 </html>
