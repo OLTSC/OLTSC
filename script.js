@@ -468,3 +468,99 @@ function verificarPin() {
         }, 3000);
     }
 }
+
+document.getElementById('uploadForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const fileInput = document.getElementById('realFileInput');
+    const file = fileInput.files[0];
+    const selectedType = document.getElementById('softwareType').value;
+    
+    if (!file) return;
+
+const allowedExtensions = {
+        'word': [
+            '.doc', '.docx', '.docm', '.dot', '.dotx', '.dotm', '.rtf', '.pdf'
+        ],
+        'excel': [
+            '.xls', '.xlsx', '.xlsb', '.xlsm', '.xlt', '.xltx', '.xltm', '.csv', '.xml'
+        ],
+        'powerpoint': [
+            '.ppt', '.pptx', '.pptm', '.pps', '.ppsx', '.ppsm', '.pot', '.potx', '.potm'
+        ],
+        'access': [
+            '.accdb', '.mdb', '.accde', '.mde', '.accdt', '.accdr'
+        ],
+        'visio': [
+            '.vsd', '.vsdx', '.vss', '.vssx', '.vst', '.vstx', '.vsdm', '.vssm', '.vstm'
+        ],
+        'project': [
+            '.mpp', '.mpt', '.xml'
+        ],
+        'dev': [
+            '.js', '.py', '.bat', '.cpp', '.h', '.html', '.css', '.java', '.c', '.cs', 
+            '.sh', '.json', '.php', '.sql', '.txt'
+        ],
+        'pseint': [
+            '.psc'
+        ]
+    };
+
+    const fileName = file.name.toLowerCase();
+    const fileExtension = fileName.substring(fileName.lastIndexOf('.'));
+
+    const isCorrectFile = allowedExtensions[selectedType].some(ext => fileExtension.endsWith(ext));
+
+    if (!isCorrectFile) {
+        const alerta = document.querySelector('.custom-alert');
+        const alertText = alerta.querySelector('span') || alerta;
+        
+       const mensajeOriginal = alertText.innerText;
+        alertText.innerText = `EL ARCHIVO NO ES UN RECURSO ${selectedType.toUpperCase()}`;
+        
+        alerta.classList.add('show');
+        gestionarAudioAlerta(true);
+
+        setTimeout(() => {
+            alerta.classList.remove('show');
+            gestionarAudioAlerta(false);
+            alertText.innerText = mensajeOriginal;
+        }, 4000);
+
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        templates.unshift({
+            id: Date.now(),
+            type: selectedType,
+            name: document.getElementById('templateName').value || file.name,
+            date: new Date().toISOString().split('T')[0],
+            fileData: event.target.result
+        });
+        
+        saveToStorage();
+        renderTemplates();
+        closeModal('uploadModal');
+        this.reset();
+        document.getElementById('fileStatusText').innerText = "Seleccionar Archivo";
+        document.getElementById('fileStatusText').classList.replace('text-green-400', 'text-slate-500');
+    }.bind(this);
+    
+    reader.readAsDataURL(file);
+});
+
+function updateFileStatus() {
+    const file = document.getElementById('realFileInput').files[0];
+    const statusText = document.getElementById('fileStatusText');
+    
+    if (file) {
+        const ext = file.name.substring(file.name.lastIndexOf('.')).toUpperCase();
+        statusText.innerText = `✓ DETECTADO [${ext}]: ${file.name}`;
+        statusText.classList.replace('text-slate-500', 'text-green-400');
+    } else {
+        statusText.innerText = "Seleccionar Archivo";
+        statusText.classList.replace('text-green-400', 'text-slate-500');
+    }
+}
