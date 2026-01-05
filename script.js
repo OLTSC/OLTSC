@@ -270,7 +270,98 @@ function openLegalModal(title) {
                 <p><b>1. CO-AUTORÍA DIGITAL:</b> Este sistema representa una integración técnica de mi visión como el desarrollador de este sitio, siendo yo <b>Angel Chavarría</b> el creador y con la capacidad algorítmica de la IA.</p>
                 <p><b>2. OPTIMIZACIÓN LÓGICA:</b> La estructura del código ha sido auditada para garantizar persistencia de datos y una interfaz de usuario fluida.</p>
                 <p><b>3. SEGURIDAD:</b> Se han implementado protocolos de protección de código para salvaguardar la integridad de los recursos alojados.</p>
-            </div>`
+            </div>`,
+'Guía Word': `
+    <div class='space-y-4'>
+        <div class='p-4 bg-blue-500/10 border-l-4 border-blue-500 rounded-r-xl mb-4'>
+            <h4 class='text-white font-black uppercase text-xs tracking-widest'>Protocolo de Documentación Estructural</h4>
+        </div>
+        <div class='text-sm text-slate-300 space-y-3'>
+            <p><b>Permitido:</b> Manuales técnicos, especificaciones y actas (.docx, .pdf).</p>
+            <p><b>Restricciones Técnicas:</b> Todo documento con macros (<b>.docm</b>) debe incluir una descripción de la función del script. Se prohíben referencias externas a plantillas globales fuera del entorno LTSC.</p>
+            <p class='text-[11px] text-slate-500 font-mono border-t border-slate-800 pt-2 uppercase'>Norma: Estilos basados en fuentes estándar para compatibilidad total.</p>
+        </div>
+    </div>`,
+
+'Guía Excel': `
+    <div class='space-y-4'>
+        <div class='p-4 bg-green-600/10 border-l-4 border-green-600 rounded-r-xl mb-4'>
+            <h4 class='text-white font-black uppercase text-xs tracking-widest'>Protocolo de Ingeniería de Datos</h4>
+        </div>
+        <div class='text-sm text-slate-300 space-y-3'>
+            <p><b>Permitido:</b> Matrices de riesgo y cronogramas (.xlsx, .xlsb).</p>
+            <p><b>Automatización y VBA:</b> Los libros con macros deben usar <b>Option Explicit</b> en su código fuente. Se prohíbe el uso de librerías ActiveX no estándar que comprometan la portabilidad del archivo.</p>
+            <p class='text-[11px] text-slate-500 font-mono border-t border-slate-800 pt-2 uppercase'>Aviso: Verifique la integridad de Power Query antes de subir.</p>
+        </div>
+    </div>`,
+
+'Guía PPT': `
+    <div class='space-y-4'>
+        <div class='p-4 bg-orange-600/10 border-l-4 border-orange-600 rounded-r-xl mb-4'>
+            <h4 class='text-white font-black uppercase text-xs tracking-widest'>Protocolo de Exposición Técnica</h4>
+        </div>
+        <div class='text-sm text-slate-300 space-y-3'>
+            <p><b>Permitido:</b> Reportes de arquitectura y capacitación (.pptx).</p>
+            <p><b>Integridad Multi-media:</b> Todo video o audio debe estar <b>incrustado</b>, no vinculado, para evitar rupturas de ruta de archivo. Los complementos (Add-ins) de terceros están restringidos.</p>
+        </div>
+    </div>`,
+
+'Guía Access': `
+    <div class='space-y-4'>
+        <div class='p-4 bg-red-600/10 border-l-4 border-red-600 rounded-r-xl mb-4'>
+            <h4 class='text-white font-black uppercase text-xs tracking-widest'>Protocolo de Gestión Relacional</h4>
+        </div>
+        <div class='text-sm text-slate-300 space-y-3'>
+            <p><b>Permitido:</b> Bases de datos de gestión (.accdb).</p>
+            <p><b>Norma de Seguridad:</b> Los archivos deben estar libres de contraseñas de nivel de base de datos no notificadas. Los módulos <b>VBA</b> deben estar compilados y sin errores de depuración pendientes.</p>
+            <p class='text-[11px] text-slate-500 font-mono border-t border-slate-800 pt-2 uppercase'>Crítico: Compactar y reparar antes de realizar el upload.</p>
+        </div>
+    </div>`,
+
+'Guía Visio': `
+    <div class='space-y-4'>
+        <div class='p-4 bg-indigo-500/10 border-l-4 border-indigo-500 rounded-r-xl mb-4'>
+            <h4 class='text-white font-black uppercase text-xs tracking-widest'>Protocolo de Infraestructura Visual</h4>
+        </div>
+        <div class='text-sm text-slate-300 space-y-3'>
+            <p><b>Permitido:</b> Topologías y diagramas de procesos (.vsdx).</p>
+            <p><b>Estandarización:</b> Uso obligatorio de stencils estándar. Los datos vinculados a formas (Shape Data) deben ser locales y no depender de conexiones a servidores externos no autorizados.</p>
+        </div>
+    </div>`,
+
+'Guía Project': `
+    <div class='space-y-4'>
+        <div class='p-4 bg-green-700/10 border-l-4 border-green-700 rounded-r-xl mb-4'>
+            <h4 class='text-white font-black uppercase text-xs tracking-widest'>Protocolo de Gestión Maestro</h4>
+        </div>
+        <div class='text-sm text-slate-300 space-y-3'>
+            <p><b>Permitido:</b> Planes de proyecto y Gantt (.mpp).</p>
+            <p><b>Sincronización:</b> Se debe validar que no existan recursos compartidos vinculados a archivos externos (Pool de recursos) que no estén presentes en el repositorio.</p>
+        </div>
+    </div>`,
+
+'Guía DEV++': `
+    <div class='space-y-4'>
+        <div class='p-4 bg-blue-800/10 border-l-4 border-blue-800 rounded-r-xl mb-4'>
+            <h4 class='text-white font-black uppercase text-xs tracking-widest'>Protocolo de Desarrollo y Automatización</h4>
+        </div>
+        <div class='text-sm text-slate-300 space-y-3'>
+            <p><b>Permitido:</b> Scripts (.js, .py, .bat) y código fuente documentado.</p>
+            <p><b>Seguridad de Código:</b> Queda prohibido subir scripts que realicen llamadas externas (APIs) sin autorización del Administrador. Todo código debe incluir comentarios de cabecera con autoría y versión.</p>
+            <p class='text-[11px] text-slate-500 font-mono border-t border-slate-800 pt-2 uppercase'>Advertencia: El código malicioso será detectado y sancionado.</p>
+        </div>
+    </div>`,
+
+'Guía PSeInt': `
+    <div class='space-y-4'>
+        <div class='p-4 bg-yellow-500/10 border-l-4 border-yellow-500 rounded-r-xl mb-4'>
+            <h4 class='text-white font-black uppercase text-xs tracking-widest'>Protocolo de Lógica Algorítmica</h4>
+        </div>
+        <div class='text-sm text-slate-300 space-y-3'>
+            <p><b>Permitido:</b> Algoritmos y lógica de entrenamiento (.psc).</p>
+            <p><b>Configuración:</b> Se recomienda utilizar el perfil de configuración "Estricto" para garantizar la formación técnica correcta en el uso de variables y sintaxis.</p>
+        </div>
+    </div>`
     };
 
     contentElement.innerHTML = textos[title] || 'Información no disponible.';
@@ -289,3 +380,91 @@ function openCreatorModal() {
     }
 }
 
+function filterTemplates(type) {
+    renderTemplates(type);
+    
+    const titulos = {
+        'word': 'Guía Word',
+        'excel': 'Guía Excel',
+        'powerpoint': 'Guía PPT',
+        'access': 'Guía Access',
+        'visio': 'Guía Visio',
+        'project': 'Guía Project',
+        'dev': 'Guía DEV++',
+        'pseint': 'Guía PSeInt'
+    };
+    
+    if (titulos[type]) {
+        openLegalModal(titulos[type]);
+    }
+}
+
+function toggleMusic() {
+    const audio = document.getElementById('bgMusic');
+    const btn = document.getElementById('musicToggle');
+    const status = document.getElementById('musicStatus');
+    const icon = document.getElementById('musicIcon');
+
+    if (audio.paused) {
+        audio.play().catch(e => console.log("Autoplay bloqueado por el navegador"));
+        btn.classList.add('playing');
+        status.innerText = "System Audio: ON";
+        status.style.color = "var(--primary)";
+        icon.innerHTML = '<i data-lucide="volume-2"></i>';
+    } else {
+        audio.pause();
+        btn.classList.remove('playing');
+        status.innerText = "System Audio: OFF";
+        status.style.color = "#64748b";
+    }
+    if(window.lucide) lucide.createIcons();
+}
+
+const bgMusic = document.getElementById('bgMusic');
+if(bgMusic) bgMusic.volume = 0.5;
+
+function gestionarAudioAlerta(isError) {
+    const audio = document.getElementById('bgMusic');
+    const body = document.body;
+    
+    if (!audio) return;
+
+    if (isError) {
+        body.classList.add('system-error');
+        let vol = audio.volume;
+        const interval = setInterval(() => {
+            if (vol > 0.1) {
+                vol -= 0.05;
+                audio.volume = Math.max(vol, 0.1);
+            } else {
+                clearInterval(interval);
+            }
+        }, 50);
+    } else {
+        body.classList.remove('system-error');
+        let vol = audio.volume;
+        const interval = setInterval(() => {
+            if (vol < 0.5) {
+                vol += 0.05;
+                audio.volume = Math.min(vol, 0.5);
+            } else {
+                clearInterval(interval);
+            }
+        }, 50);
+    }
+}
+
+function verificarPin() {
+    if (pinCorrecto) {
+    } else {
+        const alerta = document.querySelector('.custom-alert');
+        alerta.classList.add('show');
+        
+        gestionarAudioAlerta(true);
+        
+        setTimeout(() => {
+            alerta.classList.remove('show');
+            gestionarAudioAlerta(false);
+        }, 3000);
+    }
+}
