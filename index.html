@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angel Chavarría | Office LTSC 2024</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body class="font-sans antialiased bg-[#0a0c10] text-[#f0f6fc]">
+
+    <div id="securityOverlay">
+        <div class="bg-[#161b22] p-12 rounded-[2.5rem] border border-red-500/30 text-center max-w-sm mx-4 shadow-2xl">
+            <div class="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i data-lucide="shield-alert" class="w-10 h-10 text-red-500"></i>
+            </div>
+            <h2 class="text-2xl font-black mb-3 text-white">AVISO IMPORTANTE</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">
+                No tienes permitido ver o intervenir en mi código. <br>
+                Solo yo el Administrador <b>Angel Chavarría</b> puedo realizar estas acciones.
+            </p>
+            <div class="mt-8 pt-6 border-t border-[#30363d] text-[10px] text-slate-500 uppercase tracking-widest">
+                Seguridad ACTIVADA
+            </div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-xl" onclick="closeModal('loginModal')"></div>
+        <div class="bg-[#161b22] border border-[#30363d] w-full max-w-sm rounded-[2.5rem] p-10 relative shadow-2xl text-center transform transition-all">
+            <div class="w-16 h-16 bg-blue-600/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <i data-lucide="lock" class="text-blue-500 w-8 h-8"></i>
+            </div>
+            <h2 class="text-2xl font-black text-white mb-2 uppercase">Autenticación</h2>
+            <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-8 leading-relaxed">Introduzca su clave de acceso <br> para el Repositorio Maestro</p>
+            
+            <input type="password" id="loginPassInput" placeholder="••••••••" 
+                class="w-full px-6 py-5 rounded-2xl text-center text-2xl tracking-[0.5em] mb-6 border border-[#30363d] bg-[#0d1117] outline-none text-white focus:border-blue-500 transition-all">
+            
+            <button onclick="processLogin()" class="w-full bg-blue-600 hover:bg-blue-700 py-5 rounded-2xl font-black uppercase tracking-widest transition-all shadow-lg shadow-blue-900/40 active:scale-95">
+                Verificar Identidad
+            </button>
+            <button onclick="closeModal('loginModal')" class="mt-6 text-slate-500 text-[10px] font-black hover:text-white uppercase tracking-widest transition-colors">
+                Cancelar Acceso
+            </button>
+        </div>
+    </div>
+
+    <header class="fixed w-full top-0 z-50 bg-[#0a0c10]/80 backdrop-blur-xl border-b border-[#30363d]">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/20">
+                    <i data-lucide="database" class="text-white w-6 h-6"></i>
+                </div>
+                <div class="min-w-0">
+                    <h1 class="text-xl font-black tracking-tight leading-none">OFFICE LTSC 2024</h1>
+                    <span id="userRoleStatus" class="text-[10px] text-blue-400 font-bold uppercase tracking-[0.2em] mt-1 block">Administrado por Angel Chavarría</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <button id="adminLoginBtn" onclick="openLogin()" class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:bg-[#30363d] hover:text-white transition-all">
+                    <i data-lucide="shield-check" class="w-9 h-9"></i>
+                </button>
+                
+                <button onclick="openUploadModal()" class="colab-only bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-bold transition-all transform active:scale-95 flex items-center gap-2 shadow-lg shadow-blue-900/30">
+                    <i data-lucide="plus-circle" class="w-5 h-5"></i> <span class="hidden sm:inline">Subir Archivo</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-36 pb-24 max-w-7xl mx-auto px-6 min-h-screen">
+        <div class="mb-16 relative">
+            <div class="absolute -left-4 top-0 w-1 h-20 bg-blue-600 rounded-full blur-sm"></div>
+            <div class="flex items-center gap-3 text-blue-500 mb-4">
+                <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                <span class="font-black uppercase tracking-[0.3em] text-[11px]">Sistema de Gestión Digital</span>
+            </div>
+            <h2 class="text-5xl font-black tracking-tighter text-white mb-8">Repositorio Maestro <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">de Plantillas</span></h2>
+            
+            <div class="relative w-full max-w-xl group">
+                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-blue-500 transition-colors"></i>
+                <input type="text" id="searchInput" oninput="searchTemplates()" placeholder="Buscar en el repositorio maestro..." 
+                    class="bg-[#161b22] border border-[#30363d] pl-12 pr-6 py-5 rounded-2xl text-lg w-full focus:border-blue-500/50 focus:bg-[#0d1117] transition-all outline-none shadow-xl">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-5 mb-16">
+            <button onclick="filterTemplates('word')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#2b579a] hover:bg-[#2b579a]/5 transition-all group">
+                <i data-lucide="file-text" class="text-[#2b579a] w-9 h-9 group-hover:scale-110 transition"></i>
+                <span class="text-xs font-black uppercase tracking-widest text-white">Word</span>
+            </button>
+            <button onclick="filterTemplates('excel')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#217346] hover:bg-[#217346]/5 transition-all group">
+                <i data-lucide="sheet" class="text-[#217346] w-9 h-9 group-hover:scale-110 transition"></i>
+                <span class="text-xs font-black uppercase tracking-widest text-white">Excel</span>
+            </button>
+            <button onclick="filterTemplates('powerpoint')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#b7472a] hover:bg-[#b7472a]/5 transition-all group">
+                <i data-lucide="presentation" class="text-[#b7472a] w-9 h-9 group-hover:scale-110 transition"></i>
+                <span class="text-xs font-black uppercase tracking-widest text-white">PPT</span>
+            </button>
+            <button onclick="filterTemplates('access')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#a4373a] hover:bg-[#a4373a]/5 transition-all group">
+                <i data-lucide="database" class="text-[#a4373a] w-9 h-9 group-hover:scale-110 transition"></i>
+                <span class="text-xs font-black uppercase tracking-widest text-white">Access</span>
+            </button>
+            <button onclick="filterTemplates('visio')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#3955a3] hover:bg-[#3955a3]/5 transition-all group">
+                <i data-lucide="network" class="text-[#3955a3] w-9 h-9 group-hover:scale-110 transition"></i>
+                <span class="text-xs font-black uppercase tracking-widest text-white">Visio</span>
+            </button>
+            <button onclick="filterTemplates('project')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#31752f] hover:bg-[#31752f]/5 transition-all group">
+                <i data-lucide="calendar-range" class="text-[#31752f] w-9 h-9 group-hover:scale-110 transition"></i>
+                <span class="text-xs font-black uppercase tracking-widest text-white">Project</span>
+            </button>
+            <button onclick="filterTemplates('dev')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#004482] hover:bg-[#004482]/5 transition-all group">
+                <i data-lucide="code-2" class="text-[#004482] w-9 h-9 group-hover:scale-110 transition"></i>
+                <span class="text-xs font-black uppercase tracking-widest text-white">DEV++</span>
+            </button>
+            <button onclick="filterTemplates('pseint')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#f1c40f] hover:bg-[#f1c40f]/5 transition-all group">
+                <i data-lucide="terminal" class="text-[#f1c40f] w-9 h-9 group-hover:scale-110 transition"></i>
+                <span class="text-xs font-black uppercase tracking-widest text-white">PSeInt</span>
+            </button>
+        </div>
+
+        <div id="templatesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+
+        <section class="mt-32 relative">
+            <div class="absolute inset-0 bg-blue-600/5 blur-[120px] rounded-full"></div>
+            <div class="max-w-4xl mx-auto bg-[#161b22] p-8 md:p-16 rounded-[3rem] border border-[#30363d] relative overflow-hidden">
+                <div class="flex flex-col items-center text-center mb-10">
+                    <div class="w-16 h-16 bg-blue-600/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i data-lucide="user-plus" class="text-blue-500 w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-3xl font-black mb-4 text-white">Únete como Colaborador</h3>
+                    <p class="text-slate-400 max-w-md">Solicita acceso para contribuir con tus plantillas al repositorio central administrado por Angel Chavarría.</p>
+                </div>
+
+                <form id="colaboradorForm" action="https://formsubmit.co/manuelguevarachavarria@outlook.es" method="POST" class="space-y-6 text-white">
+                    <input type="hidden" name="_next" value="https://caecorg.github.io/OLTSC/">
+                    <input type="hidden" name="_captcha" value="false">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-4">Nombre Completo</label>
+                            <input type="text" name="Nombre" placeholder="Ej. Juan Pérez" required class="px-6 py-4 rounded-2xl w-full bg-[#0d1117] border border-[#30363d] outline-none">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-4">Email Corporativo</label>
+                            <input type="email" name="Email" placeholder="correo@ejemplo.com" required class="px-6 py-4 rounded-2xl w-full bg-[#0d1117] border border-[#30363d] outline-none">
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-4">Propuesta de colaboración</label>
+                        <textarea name="Mensaje" placeholder="¿Qué tipo de plantillas deseas compartir?" rows="4" class="w-full px-6 py-4 rounded-2xl bg-[#0d1117] border border-[#30363d] outline-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 py-5 rounded-2xl font-black uppercase tracking-widest transition-all shadow-xl shadow-blue-900/20 flex items-center justify-center gap-3 active:scale-[0.98]">
+                        <i data-lucide="send" class="w-5 h-5"></i> Enviar Solicitud de Acceso
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#0d1117] border-t border-[#30363d] pt-20 pb-12 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/20">
+                        <i data-lucide="layout-template" class="text-white w-6 h-6"></i>
+                    </div>
+                    <span class="text-2xl font-black tracking-tighter text-white">OLTSC 2024</span>
+                </div>
+                <p class="text-slate-400 max-w-md leading-relaxed text-sm">
+                    Repositorio privado de alto rendimiento administrado exclusivamente por <b>Angel Chavarría</b>. 
+                    Diseñado para la centralización de herramientas ofimáticas bajo estándares LTSC.
+                </p>
+                <div class="mt-8 flex gap-4">
+                    <div class="px-4 py-2 bg-[#161b22] border border-[#30363d] rounded-full text-[10px] font-bold text-blue-400 uppercase tracking-widest">v2.4 Stable</div>
+                    <div class="px-4 py-2 bg-[#161b22] border border-[#30363d] rounded-full text-[10px] font-bold text-green-400 uppercase tracking-widest">Online</div>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-black mb-8 text-white uppercase text-xs tracking-[0.3em]">Ecosistemas</h4>
+<ul class="text-slate-400 space-y-4 text-sm font-medium">
+    <li><a href="#" class="hover:text-blue-600 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Word LTSC</a></li>
+    <li><a href="#" class="hover:text-green-600 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Excel LTSC</a></li>
+    <li><a href="#" class="hover:text-orange-500 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>PowerPoint LTSC</a></li>
+    <li><a href="#" class="hover:text-red-500 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Access LTSC</a></li>
+    <li><a href="#" class="hover:text-blue-800 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Visio LTSC</a></li>
+    <li><a href="#" class="hover:text-green-700 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Project LTSC</a></li>
+    <li><a href="#" class="hover:text-blue-500 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>DEV++ Coding</a></li>
+    <li><a href="#" class="hover:text-yellow-500 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>PSeInt Logic</a></li>
+</ul>
+            </div>
+
+            <div>
+    <h4 class="font-black mb-8 text-white uppercase text-xs tracking-[0.3em]">Legales</h4>
+    <ul class="text-slate-400 space-y-4 text-sm font-medium">
+        <li>
+            <a href="javascript:void(0)" onclick="openLegalModal('Términos de Uso')" class="hover:text-white transition-colors flex items-center gap-2">
+                <i data-lucide="chevron-right" class="w-3 h-3 text-slate-500"></i> Términos de Uso
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" onclick="openLegalModal('Condiciones Generales')" class="hover:text-white transition-colors flex items-center gap-2">
+                <i data-lucide="chevron-right" class="w-3 h-3 text-slate-500"></i> Condiciones Generales
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" onclick="openLegalModal('Políticas de Cookies')" class="hover:text-white transition-colors flex items-center gap-2">
+                <i data-lucide="chevron-right" class="w-3 h-3 text-slate-500"></i> Políticas de Cookies
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" onclick="openLegalModal('Privacidad de Datos')" class="hover:text-white transition-colors flex items-center gap-2">
+                <i data-lucide="chevron-right" class="w-3 h-3 text-slate-500"></i> Privacidad de Datos
+            </a>
+        </li>
+        <div class="mt-4">
+    <button onclick="openLegalModal('Arquitectura')" 
+            class="flex items-center gap-4 p-2 pr-6 rounded-2xl bg-blue-500/5 border border-blue-500/20 hover:bg-blue-500/10 hover:border-blue-500/40 transition-all duration-300 group shadow-lg shadow-blue-500/5">
+        
+        <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300">
+            <i data-lucide="cpu" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
+        </div>
+        
+        <div class="flex flex-col items-start">
+            <span class="text-[10px] text-blue-400 font-black uppercase tracking-[0.2em] leading-none mb-1">Arquitectura</span>
+            <span class="text-[12px] text-white font-black uppercase tracking-widest leading-none">2021-2026</span>
+        </div>
+    </button>
+</div>
+<li class="pt-4">
+    <a href="javascript:void(0)" onclick="openCreatorModal()" 
+       class="group flex items-center gap-4 p-2 pr-8 rounded-[1.5rem] bg-red-600/5 border border-red-600/20 hover:border-red-600/50 hover:bg-red-600/10 transition-all duration-500 shadow-lg shadow-red-900/5 w-fit">
+        
+        <div class="w-10 h-10 rounded-xl bg-red-600/10 flex items-center justify-center text-red-500 group-hover:bg-red-600 group-hover:text-white transition-all duration-500">
+            <i data-lucide="gavel" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
+        </div>
+        
+        <div class="flex flex-col items-start">
+            <span class="text-[9px] text-red-400 font-black uppercase tracking-[0.2em] leading-none mb-1 opacity-70">Expediente</span>
+            <span class="text-[12px] text-white font-black uppercase tracking-widest leading-none">Del Creador</span>
+        </div>
+    </a>
+</li>
+    </ul>
+</div>
+
+<div id="creatorModal" class="fixed inset-0 z-[10000] hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/95 backdrop-blur-2xl" onclick="closeModal('creatorModal')"></div>
+    
+    <div class="bg-[#0d1117] border-2 border-red-600/50 w-full max-w-2xl rounded-[3rem] p-8 md:p-12 relative shadow-[0_0_50px_rgba(220,38,38,0.2)] text-white transform transition-all overflow-hidden flex flex-col max-h-[90vh]">
+        
+        <div class="flex items-center gap-5 mb-8 border-b border-red-600/20 pb-6">
+            <div class="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center shadow-lg shadow-red-900/40 shrink-0">
+                <i data-lucide="user-check" class="w-10 h-10 text-white"></i>
+            </div>
+            <div class="flex flex-col">
+                <h3 class="text-red-600 font-black uppercase text-xs tracking-[0.4em] mb-1">Expediente Legal y Autoría</h3>
+                <h2 class="text-3xl font-black tracking-tight text-white uppercase leading-none">Angel Chavarría</h2>
+                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em] mt-1">Administrador Único y Desarrollador</p>
+            </div>
+        </div>
+
+        <div class="overflow-y-auto pr-4 text-slate-300 leading-relaxed space-y-6 text-sm custom-scrollbar">
+            
+            <div class="bg-red-600/5 border-l-4 border-red-600 p-6 rounded-r-2xl">
+                <h4 class="text-white font-black uppercase text-xs mb-2 tracking-widest">Propósito del Proyecto</h4>
+                <p>Este repositorio ha sido diseñado exclusivamente para la centralización y gestión de herramientas ofimáticas bajo estándares LTSC. Su arquitectura es privada, protegida y de uso restringido.</p>
+            </div>
+
+            <div class="space-y-4 px-2">
+                <h4 class="text-white font-black uppercase text-xs tracking-widest flex items-center gap-2">
+                    <i data-lucide="shield-alert" class="w-4 h-4 text-red-500"></i>
+                    Descargo de Responsabilidad (Uploads)
+                </h4>
+                <p>El Administrador <b>no se hace responsable</b> por el contenido de los archivos subidos por colaboradores. Si un usuario ingresa archivos inapropiados, maliciosos o que infrinjan derechos de autor externos, la responsabilidad legal recae única y exclusivamente sobre el emisor del archivo.</p>
+            </div>
+
+            <div class="bg-black border border-[#30363d] p-6 rounded-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-2 opacity-10">
+                    <i data-lucide="gavel" class="w-12 h-12"></i>
+                </div>
+                <h4 class="text-red-500 font-black uppercase text-xs mb-2 tracking-widest">Advertencia de Seguridad Industrial</h4>
+                <p class="text-white font-bold italic mb-3">"Cualquier intento de manipulación, copia, clonación o intervención de este código en GitHub sin mi autorización expresa será tratado como un delito informático."</p>
+                <p class="text-[11px] text-slate-500 leading-normal">Me reservo el derecho de ejercer acciones penales bajo leyes de Propiedad Intelectual y normativas internacionales de Ciberseguridad contra cualquier individuo que comprometa la integridad de este repositorio maestro.</p>
+            </div>
+        </div>
+
+        <div class="mt-10 pt-6 border-t border-[#30363d] flex flex-col sm:flex-row gap-4 justify-between items-center">
+            <a href="ACCIONES LEGALES OLTSC.pdf" download class="flex items-center gap-3 bg-white text-black px-6 py-4 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-red-600 hover:text-white transition-all shadow-xl active:scale-95 group">
+                <i data-lucide="file-warning" class="w-5 h-5 group-hover:animate-bounce"></i> 
+                Descargar Expediente de Acciones Penales
+            </a>
+            
+            <button onclick="closeModal('creatorModal')" class="text-slate-500 hover:text-white font-black uppercase text-[10px] tracking-widest transition-all">
+                Entendido y Aceptado
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 pt-10 border-t border-[#30363d] flex flex-col md:flex-row justify-between items-center gap-8">
+            <p class="text-slate-500 text-[11px] font-bold uppercase tracking-widest text-center">
+                &copy; 2021-2026 Todos los Derechos Reservados por <span class="text-white">Angel Chavarría</span>
+            </p>
+            <div class="flex gap-8">
+                <a href="#" class="text-slate-500 hover:text-green-500 transition-all transform hover:scale-125"><i data-lucide="message-circle" class="w-6 h-6"></i></a>
+                <a href="#" class="text-slate-500 hover:text-blue-600 transition-all transform hover:scale-125"><i data-lucide="facebook" class="w-6 h-6"></i></a>
+                <a href="#" class="text-slate-500 hover:text-sky-400 transition-all transform hover:scale-125"><i data-lucide="send" class="w-6 h-6"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="uploadModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="closeModal('uploadModal')"></div>
+        <div class="bg-[#161b22] border border-[#30363d] w-full max-w-md rounded-[2.5rem] p-10 relative shadow-2xl text-white transform transition-all">
+            <div class="mb-8">
+                <h2 class="text-3xl font-black tracking-tight">Nuevo Recurso</h2>
+                <p class="text-slate-400 text-sm mt-2">Completa los datos para subir la plantilla.</p>
+            </div>
+            
+            <form id="uploadForm" class="space-y-5">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-4">Software</label>
+                    <select id="softwareType" required class="w-full px-5 py-4 rounded-2xl bg-[#0d1117] border border-[#30363d] outline-none">
+                        <option value="word">Microsoft Word (.dotx)</option>
+                        <option value="excel">Microsoft Excel (.xltx)</option>
+                        <option value="powerpoint">Microsoft PowerPoint (.potx)</option>
+                        <option value="access">Microsoft Access (.accdb)</option>
+                        <option value="visio">Microsoft Visio (.vstx)</option>
+                        <option value="project">Microsoft Project (.mpt)</option>
+                        <option value="dev">DEV++ (.cpp)</option>
+                        <option value="pseint">PSeInt (.psc)</option>
+                    </select>
+                </div>
+                
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-4">Nombre de Plantilla</label>
+                    <input type="text" id="templateName" required placeholder="Ej. Facturación V1.2" class="w-full px-5 py-4 rounded-2xl bg-[#0d1117] border border-[#30363d] outline-none">
+                </div>
+
+                <input type="file" id="realFileInput" class="hidden" onchange="updateFileStatus()">
+                <div class="upload-zone rounded-3xl p-10 text-center cursor-pointer group" onclick="document.getElementById('realFileInput').click()">
+                    <div class="w-14 h-14 bg-[#30363d] rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-600/20 transition">
+                        <i data-lucide="file-up" class="w-7 h-7 text-slate-400 group-hover:text-blue-500 transition"></i>
+                    </div>
+                    <span id="fileStatusText" class="text-xs font-bold text-slate-500 uppercase tracking-widest">Seleccionar Archivo</span>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 py-5 rounded-2xl font-black uppercase tracking-widest transition-all">Procesar y Subir</button>
+            </form>
+            <button onclick="closeModal('uploadModal')" class="absolute top-6 right-6 text-slate-500 hover:text-white transition"><i data-lucide="x"></i></button>
+        </div>
+    </div>
+
+    <div id="legalModal" class="fixed inset-0 z-[1000] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="closeModal('legalModal')"></div>
+        <div class="bg-[#161b22] border border-[#30363d] w-full max-w-2xl rounded-[2.5rem] p-8 md:p-12 relative shadow-2xl text-white flex flex-col max-h-[90vh]">
+            <h2 id="legalTitle" class="text-3xl font-black tracking-tight text-blue-500 mb-4"></h2>
+            <div id="legalContent" class="overflow-y-auto pr-4 text-slate-400 leading-relaxed space-y-4 text-sm custom-scrollbar">
+                <p>Información legal detallada...</p>
+            </div>
+            <div class="mt-8 pt-6 border-t border-[#30363d] flex justify-end">
+                <button onclick="closeModal('legalModal')" class="bg-[#30363d] hover:bg-[#484f58] text-white px-8 py-3 rounded-xl font-bold transition-all uppercase text-xs tracking-widest">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="errorAlert" class="custom-alert">
+        <i data-lucide="shield-alert" class="w-5 h-5"></i>
+        <span>PIN INCORRECTO - ACCESO DENEGADO</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
