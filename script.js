@@ -204,22 +204,59 @@ function closeModal(id) {
 
 function initSecurity() {
     const overlay = document.getElementById('securityOverlay');
+    
     const trigger = (e) => { 
-        if (currentUserRole !== 'invitado') return;
+        if (currentUserRole === 'admin') return;
+        
         e.preventDefault(); 
         if (overlay) {
             overlay.style.display = 'flex'; 
             setTimeout(() => overlay.style.display = 'none', 3000);
         }
     };
+
     document.addEventListener('contextmenu', trigger);
+
     document.addEventListener('keydown', (e) => {
-        if (currentUserRole === 'invitado') {
-            if ((e.ctrlKey && ['u','s','i','j','c'].includes(e.key.toLowerCase())) || e.key === 'F12') {
+        if (currentUserRole !== 'admin') {
+            const forbiddenKeys = ['u', 's', 'i', 'j', 'c'];
+            if ((e.ctrlKey && forbiddenKeys.includes(e.key.toLowerCase())) || e.key === 'F12') {
                 trigger(e);
             }
         }
     });
+
+    document.addEventListener('copy', (e) => {
+        if (currentUserRole !== 'admin') trigger(e);
+    });
+
+    document.addEventListener('dragstart', (e) => {
+        if (currentUserRole !== 'admin') e.preventDefault();
+    });
+
+    document.addEventListener('click', (e) => {
+        if (currentUserRole !== 'admin') {
+            const link = e.target.closest('ul.text-slate-400 a');
+            if (link) {
+                e.preventDefault();
+            }
+        }
+    });
+
+    const styleId = 'disable-selection-style';
+    let styleTag = document.getElementById(styleId);
+    
+    if (!styleTag) {
+        styleTag = document.createElement('style');
+        styleTag.id = styleId;
+        document.head.appendChild(styleTag);
+    }
+
+    if (currentUserRole !== 'admin') {
+        styleTag.innerHTML = `body { user-select: none !important; -webkit-user-select: none !important; }`;
+    } else {
+        styleTag.innerHTML = `body { user-select: auto !important; -webkit-user-select: auto !important; }`;
+    }
 }
 
 function openLegalModal(title) {
@@ -563,4 +600,12 @@ function updateFileStatus() {
         statusText.innerText = "Seleccionar Archivo";
         statusText.classList.replace('text-green-400', 'text-slate-500');
     }
+}
+
+if (currentUserRole !== 'admin') {
+    document.body.style.userSelect = 'none';
+    document.body.style.webkitUserSelect = 'none';
+} else {
+    document.body.style.userSelect = 'auto';
+    document.body.style.webkitUserSelect = 'auto';
 }
