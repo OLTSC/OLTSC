@@ -78,20 +78,39 @@
     </header>
 
     <main class="pt-36 pb-24 max-w-7xl mx-auto px-6 min-h-screen">
-        <div class="mb-16 relative">
-            <div class="absolute -left-4 top-0 w-1 h-20 bg-blue-600 rounded-full blur-sm"></div>
-            <div class="flex items-center gap-3 text-blue-500 mb-4">
+<div class="header-master-container flex flex-col justify-center min-h-[40vh] lg:min-h-[50vh] mb-16 relative">
+    
+    <div class="absolute -left-6 top-1/2 -translate-y-1/2 w-1.5 h-32 bg-gradient-to-b from-blue-600 to-transparent rounded-full blur-[2px] opacity-70"></div>
+    
+    <div class="relative z-10">
+        <div class="flex items-center gap-4 text-blue-500 mb-6 animate-pulse-slow">
+            <div class="p-2 bg-blue-500/10 rounded-lg">
                 <i data-lucide="layout-grid" class="w-5 h-5"></i>
-                <span class="font-black uppercase tracking-[0.3em] text-[11px]">Sistema de Gestión Digital</span>
             </div>
-            <h2 class="text-5xl font-black tracking-tighter text-white mb-8">Repositorio Maestro <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">de Plantillas</span></h2>
+            <span class="font-black uppercase tracking-[0.4em] text-[10px] sm:text-[12px]">Sistema de Gestión Digital v2.0</span>
+        </div>
+
+        <h2 class="text-6xl md:text-7xl font-black tracking-tighter text-white mb-10 leading-[0.9]">
+            Repositorio Maestro <br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-600 to-indigo-600">
+                de Plantillas
+            </span>
+        </h2>
+        
+        <div class="relative w-full max-w-2xl group">
+            <div class="absolute inset-0 bg-blue-600/20 blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500"></div>
+            <i data-lucide="search" class="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-500 group-focus-within:text-blue-400 transition-all z-20"></i>
+            <input type="text" id="searchInput" oninput="searchTemplates()" 
+                placeholder="Buscar en el repositorio maestro..." 
+                class="relative z-10 bg-[#0d1117]/80 backdrop-blur-md border border-[#30363d] pl-14 pr-6 py-6 rounded-2xl text-xl w-full focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none shadow-2xl text-white placeholder:text-slate-600">
             
-            <div class="relative w-full max-w-xl group">
-                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-blue-500 transition-colors"></i>
-                <input type="text" id="searchInput" oninput="searchTemplates()" placeholder="Buscar en el repositorio maestro..." 
-                    class="bg-[#161b22] border border-[#30363d] pl-12 pr-6 py-5 rounded-2xl text-lg w-full focus:border-blue-500/50 focus:bg-[#0d1117] transition-all outline-none shadow-xl">
+            <div class="absolute right-4 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-1 z-20">
+                <kbd class="px-2 py-1 bg-[#161b22] border border-[#30363d] rounded text-[10px] text-slate-500 font-mono">CTRL</kbd>
+                <kbd class="px-2 py-1 bg-[#161b22] border border-[#30363d] rounded text-[10px] text-slate-500 font-mono">K</kbd>
             </div>
         </div>
+    </div>
+</div>
 
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-5 mb-16">
             <button onclick="filterTemplates('word')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#2b579a] hover:bg-[#2b579a]/5 transition-all group">
