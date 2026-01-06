@@ -96,6 +96,21 @@
                 de Plantillas
             </span>
         </h2>
+        <div id="audioContainer" class="fixed bottom-6 left-6 z-[11001] flex items-center gap-3">
+    <button id="musicToggle" class="music-btn" onclick="toggleMusic()">
+        <i data-lucide="music" id="musicIcon" class="w-5 h-5"></i>
+        <div class="music-waves">
+            <span></span><span></span><span></span>
+        </div>
+    </button>
+    <div class="flex flex-col">
+        <span id="musicStatus" class="text-[8px] font-black uppercase tracking-[0.2em] text-slate-500">System Audio</span>
+        <span id="trackName" class="text-[7px] text-slate-600 font-bold truncate w-24">AMBIE-TECH v1.0</span>
+    </div>
+    <audio id="bgMusic" loop>
+        <source src="SAINt JHN - Roses (Imanbek Remix) (Official Music Video).mp3" type="audio/mpeg">
+    </audio>
+</div>
         
         <div class="relative w-full max-w-2xl group">
             <div class="absolute inset-0 bg-blue-600/20 blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500"></div>
@@ -111,7 +126,6 @@
         </div>
     </div>
 </div>
-
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-5 mb-16">
             <button onclick="filterTemplates('word')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#2b579a] hover:bg-[#2b579a]/5 transition-all group">
                 <i data-lucide="file-text" class="text-[#2b579a] w-9 h-9 group-hover:scale-110 transition"></i>
@@ -205,19 +219,176 @@
                     <div class="px-4 py-2 bg-[#161b22] border border-[#30363d] rounded-full text-[10px] font-bold text-green-400 uppercase tracking-widest">Online</div>
                 </div>
             </div>
-            <div>
-                <h4 class="font-black mb-8 text-white uppercase text-xs tracking-[0.3em]">Ecosistemas</h4>
-<ul class="text-slate-400 space-y-4 text-sm font-medium">
-    <li><a href="#" class="hover:text-blue-600 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Word LTSC</a></li>
-    <li><a href="#" class="hover:text-green-600 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Excel LTSC</a></li>
-    <li><a href="#" class="hover:text-orange-500 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>PowerPoint LTSC</a></li>
-    <li><a href="#" class="hover:text-red-500 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Access LTSC</a></li>
-    <li><a href="#" class="hover:text-blue-800 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Visio LTSC</a></li>
-    <li><a href="#" class="hover:text-green-700 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Project LTSC</a></li>
-    <li><a href="#" class="hover:text-blue-500 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>DEV++ Coding</a></li>
-    <li><a href="#" class="hover:text-yellow-500 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>PSeInt Logic</a></li>
-</ul>
+<div>
+    <h4 class="font-black mb-8 text-white uppercase text-xs tracking-[0.3em]">Ecosistemas</h4>
+    <ul class="text-slate-400 space-y-4 text-sm font-medium">
+        <li><a href="javascript:void(0)" data-eco="soft_word" class="hover:text-blue-600 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Microsoft Office LTSC Word</a></li>
+        <li><a href="javascript:void(0)" data-eco="soft_excel" class="hover:text-green-600 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Microsoft Office LTSC Excel</a></li>
+        <li><a href="javascript:void(0)" data-eco="soft_pp" class="hover:text-orange-500 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Microsoft Office LTSC PowerPoint</a></li>
+        <li><a href="javascript:void(0)" data-eco="soft_access" class="hover:text-red-500 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Microsoft Office LTSC Access</a></li>
+        <li><a href="javascript:void(0)" data-eco="soft_visio" class="hover:text-blue-800 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Microsoft Office LTSC Visio</a></li>
+        <li><a href="javascript:void(0)" data-eco="soft_project" class="hover:text-green-700 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Microsoft office LTSC Project</a></li>
+        <li><a href="javascript:void(0)" data-eco="soft_dev" class="hover:text-blue-500 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>DEV++ Coding</a></li>
+        <li><a href="javascript:void(0)" data-eco="soft_pseint" class="hover:text-yellow-500 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>PSeInt Logic</a></li>
+    </ul>
+</div>
+
+<div id="eco-info-terminal" style="display: none;" class="fixed inset-0 z-[99999] flex items-center justify-center bg-[#0a0c10]/95 backdrop-blur-xl p-4 transition-all duration-300 opacity-0">
+    <div id="eco-box-content" class="bg-[#161b22] border-2 border-[#30363d] rounded-[4px_30px_4px_30px] shadow-2xl max-w-md w-full overflow-hidden transform scale-95 transition-all duration-300">
+        
+        <div id="eco-header" class="p-5 flex justify-between items-center border-b-2">
+            <div class="flex items-center gap-4">
+                <div class="p-2 rounded-lg bg-white/5 border border-white/10" id="eco-icon-box"></div>
+                <div>
+                    <h3 id="eco-title" class="font-black text-white uppercase tracking-wider text-sm"></h3>
+                    <span class="text-[9px] text-slate-500 font-bold uppercase tracking-[0.2em]">Data Ecosystem Access</span>
+                </div>
             </div>
+        </div>
+
+        <div class="p-8 space-y-6">
+            <div>
+                <h4 class="text-[#0078d4] uppercase text-[10px] font-black tracking-widest mb-2 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 bg-[#0078d4] rounded-full animate-pulse"></span> Especificación Técnica
+                </h4>
+                <p id="eco-def" class="text-slate-300 text-xs leading-relaxed font-medium"></p>
+            </div>
+            
+            <div class="p-4 bg-[#0d1117] border border-[#30363d] rounded-[4px_15px_4px_15px]">
+                <h4 class="text-slate-500 uppercase text-[10px] font-black tracking-widest mb-2">Implementación Local</h4>
+                <p id="eco-purpose" class="text-slate-400 text-xs italic leading-relaxed"></p>
+            </div>
+        </div>
+
+        <div class="bg-[#0d1117]/50 p-4 flex justify-end border-t border-[#30363d]">
+            <button type="button" id="btn-close-terminal" class="btn-solicitud-asimetrico !py-2 !px-8 !mb-0 !w-auto !text-[10px] cursor-pointer">
+                Confirmar y Salir
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    #eco-info-terminal.is-active {
+        display: flex !important;
+        opacity: 1 !important;
+    }
+    #eco-info-terminal.is-active #eco-box-content {
+        transform: scale(1) !important;
+    }
+
+    .eco-word { border-bottom-color: var(--word) !important; background: linear-gradient(90deg, rgba(43,87,154,0.1), transparent); }
+    .eco-excel { border-bottom-color: var(--excel) !important; background: linear-gradient(90deg, rgba(33,115,70,0.1), transparent); }
+    .eco-pp { border-bottom-color: var(--powerpoint) !important; background: linear-gradient(90deg, rgba(183,71,42,0.1), transparent); }
+    .eco-access { border-bottom-color: var(--access) !important; background: linear-gradient(90deg, rgba(164,55,58,0.1), transparent); }
+    .eco-visio { border-bottom-color: var(--visio) !important; background: linear-gradient(90deg, rgba(57,85,163,0.1), transparent); }
+    .eco-project { border-bottom-color: var(--project) !important; background: linear-gradient(90deg, rgba(49,117,47,0.1), transparent); }
+    .eco-dev { border-bottom-color: var(--dev) !important; background: linear-gradient(90deg, rgba(0,68,130,0.1), transparent); }
+    .eco-pseint { border-bottom-color: var(--pseint) !important; background: linear-gradient(90deg, rgba(241,196,15,0.1), transparent); }
+</style>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+const ecoSystemMap = {
+        soft_word: { 
+            title: "Microsoft Word LTSC Professional", 
+            icon: "file-text", 
+            theme: "eco-word", 
+            d: "Sistema avanzado de procesamiento de activos textuales diseñado para la arquitectura de documentos técnicos de alta complejidad. Word LTSC permite la gestión semántica de información, la integración de metadatos estructurados y la generación de documentación con estándares de cumplimiento corporativo. Implementa motores de renderizado tipográfico de precisión y sistemas de corrección algorítmica de última generación para garantizar la integridad comunicativa del ecosistema digital.", 
+            p: "Este módulo se utiliza para la creación y estandarización de manuales operativos, reportes de incidentes técnicos y toda la documentación de soporte que rige los protocolos internos del sitio, asegurando una transferencia de conocimiento sin pérdida de fidelidad entre los departamentos técnicos." 
+        },
+        soft_excel: { 
+            title: "Microsoft Excel LTSC Enterprise", 
+            icon: "table", 
+            theme: "eco-excel", 
+            d: "Plataforma analítica de procesamiento de datos multidimensionales. Este componente es el núcleo de cálculo del sistema, capaz de gestionar extensas matrices de información, tablas dinámicas vinculadas y modelos predictivos mediante funciones lógicas complejas. Excel LTSC actúa como un puente de inteligencia de negocios para la visualización de métricas críticas, permitiendo el filtrado y segmentación de datos masivos en tiempo real bajo un entorno de estabilidad Long Term Service Channel.", 
+            p: "Implementado para el control riguroso de auditorías, seguimiento de métricas de rendimiento del sitio, gestión financiera de recursos y el mantenimiento de bases de datos administrativas que alimentan los cuadros de mando operativos." 
+        },
+        soft_pp: { 
+            title: "Microsoft PowerPoint LTSC Visualizer", 
+            icon: "presentation", 
+            theme: "eco-pp", 
+            d: "Motor de comunicación visual y diseño de interfaces informativas. PowerPoint LTSC proporciona las herramientas necesarias para la síntesis de conceptos técnicos en capas visuales digeribles. Utiliza un sistema de capas multimedia para la creación de flujos narrativos que explican arquitecturas complejas, despliegues de red y estrategias operativas, integrando activos gráficos dinámicos y transiciones de alto impacto que mantienen la atención del usuario final.", 
+            p: "Su finalidad principal es la generación de guías interactivas y presentaciones de estado para los ecosistemas digitales, facilitando la inducción de nuevos usuarios y la exposición de hitos de desarrollo ante el comité técnico del proyecto." 
+        },
+        soft_access: { 
+            title: "Microsoft Access LTSC Database Core", 
+            icon: "database", 
+            theme: "eco-access", 
+            d: "Sistema de gestión de bases de datos relacionales diseñado para la administración de activos de nivel intermedio. Access LTSC permite la creación de estructuras de datos vinculadas, formularios de entrada personalizados y generadores de informes que interactúan con el motor de SQL local. Proporciona un entorno robusto para el almacenamiento organizado de entidades, permitiendo consultas complejas (queries) que extraen información específica de entre miles de registros con latencia mínima.", 
+            p: "Se encarga del mantenimiento de los catálogos de hardware, registros de usuarios del sistema y la gestión de inventarios de activos digitales, sirviendo como la fuente de verdad para los procesos de logística interna del sitio." 
+        },
+        soft_visio: { 
+            title: "Microsoft Visio LTSC Architecture", 
+            icon: "git-fork", 
+            theme: "eco-visio", 
+            d: "Herramienta especializada en la esquematización lógica y visualización de topologías complejas. Visio LTSC ofrece una biblioteca extensa de notaciones industriales (UML, BPMN, IEEE) para mapear infraestructuras de red, diagramas de flujo de datos y organigramas operativos. Su motor de vectores permite representar con absoluta precisión la interconexión entre nodos de hardware y módulos de software, facilitando la comprensión de dependencias críticas en sistemas distribuidos.", 
+            p: "Esencial para el diseño y actualización constante de los planos de arquitectura de red del ecosistema, permitiendo visualizar los cuellos de botella y las rutas de redundancia en la infraestructura técnica del sitio." 
+        },
+        soft_project: { 
+            title: "Microsoft Project LTSC Manager", 
+            icon: "calendar-days", 
+            theme: "eco-project", 
+            d: "Software de gestión de ciclo de vida de proyectos y administración de recursos críticos. Project LTSC implementa algoritmos de cálculo de ruta crítica (CPM), diagramas de Gantt dinámicos y sistemas de nivelación de recursos para garantizar que los objetivos técnicos se cumplan dentro de los plazos establecidos. Permite la asignación de costos, la medición del progreso real frente al planificado y la mitigación de riesgos operativos mediante simulaciones de carga de trabajo.", 
+            p: "Utilizado para el seguimiento milimétrico de los cronogramas de actualización del sistema y la coordinación de tareas entre los distintos desarrolladores, asegurando que cada fase del ecosistema se despliegue sin retrasos." 
+        },
+        soft_dev: { 
+            title: "DEV++ Integrated Coding Suite", 
+            icon: "code-2", 
+            theme: "eco-dev", 
+            d: "Entorno de desarrollo integrado (IDE) optimizado para la compilación de lenguajes de bajo nivel como C y C++. Esta suite de codificación proporciona un compilador de alta eficiencia, depurador en tiempo real y herramientas de gestión de memoria que son vitales para la optimización del rendimiento del núcleo del sistema. Soporta bibliotecas estáticas y dinámicas, permitiendo el desarrollo de algoritmos de alta velocidad y controladores de hardware que interactúan directamente con la capa física de los dispositivos.", 
+            p: "Su función es el mantenimiento preventivo y correctivo del core algorítmico del ecosistema, garantizando que el código subyacente sea eficiente, seguro y esté libre de fugas de memoria que puedan comprometer la estabilidad." 
+        },
+        soft_pseint: { 
+            title: "PSeInt Logic Design & Prototype", 
+            icon: "brain-circuit", 
+            theme: "eco-pseint", 
+            d: "Plataforma de ingeniería lógica orientada al diseño y validación de pseudocódigo estructural. PSeInt permite el prototipado rápido de flujos de control, bucles iterativos y estructuras de decisión antes de su transcodificación a lenguajes de producción. Implementa un motor de ejecución paso a paso que ayuda a identificar errores de lógica y redundancias en los algoritmos, asegurando que la arquitectura del pensamiento computacional sea impecable desde su concepción.", 
+            p: "Actúa como la fase de pre-producción para todos los nuevos procesos lógicos implementados en el sitio, sirviendo para validar cada nueva funcionalidad antes de que un solo bit de código real sea escrito." 
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const terminal = document.getElementById('eco-info-terminal');
+        const closeBtn = document.getElementById('btn-close-terminal');
+
+        const closeTerminal = (e) => {
+            if(e) { e.preventDefault(); e.stopPropagation(); }
+            terminal.classList.remove('is-active');
+            setTimeout(() => { terminal.style.display = 'none'; }, 300);
+        };
+
+        closeBtn.addEventListener('click', closeTerminal);
+
+        document.addEventListener('click', (e) => {
+            const trigger = e.target.closest('[data-eco]');
+            if (trigger) {
+                e.preventDefault();
+                e.stopPropagation();
+                const key = trigger.getAttribute('data-eco');
+                const data = ecoSystemMap[key];
+
+                if (data) {
+                    document.getElementById('eco-title').innerText = data.title;
+                    document.getElementById('eco-def').innerText = data.d;
+                    document.getElementById('eco-purpose').innerText = data.p;
+                    document.getElementById('eco-icon-box').innerHTML = `<i data-lucide="${data.icon}" class="w-6 h-6 text-white"></i>`;
+                    document.getElementById('eco-header').className = `p-5 flex justify-between items-center border-b-2 ${data.theme}`;
+                    
+                    if(window.lucide) lucide.createIcons();
+
+                    terminal.style.display = 'flex';
+                    setTimeout(() => terminal.classList.add('is-active'), 10);
+                }
+            }
+        });
+
+        terminal.addEventListener('click', (e) => {
+            if (e.target === terminal) closeTerminal(e);
+        });
+    });
+</script>
 
             <div>
     <h4 class="font-black mb-8 text-white uppercase text-xs tracking-[0.3em]">Legales</h4>
@@ -433,21 +604,5 @@
     </div>
 
     <script src="script.js"></script>
-
-<div id="audioContainer" class="fixed bottom-6 left-6 z-[11001] flex items-center gap-3">
-    <button id="musicToggle" class="music-btn" onclick="toggleMusic()">
-        <i data-lucide="music" id="musicIcon" class="w-5 h-5"></i>
-        <div class="music-waves">
-            <span></span><span></span><span></span>
-        </div>
-    </button>
-    <div class="flex flex-col">
-        <span id="musicStatus" class="text-[8px] font-black uppercase tracking-[0.2em] text-slate-500">System Audio</span>
-        <span id="trackName" class="text-[7px] text-slate-600 font-bold truncate w-24">AMBIE-TECH v1.0</span>
-    </div>
-    <audio id="bgMusic" loop>
-        <source src="SAINt JHN - Roses (Imanbek Remix) (Official Music Video).mp3" type="audio/mpeg">
-    </audio>
-</div>
 </body>
 </html>
