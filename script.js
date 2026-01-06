@@ -304,7 +304,7 @@ function openLegalModal(title) {
                         <p class='text-[9px] text-slate-500 font-mono uppercase'>Powered by Angel Chavarría</p>
                     </div>
                 </div>
-                <p><b>1. CO-AUTORÍA DIGITAL:</b> Este sistema representa una integración técnica de mi visión como el desarrollador de este sitio, siendo yo <b>Angel Chavarría</b> el creador y con la capacidad algorítmica de la IA.</p>
+                <p><b>1. CO-AUTORÍA DIGITAL:</b> Este sistema representa una integración técnica de mi visión como el desarrollador de este sitio, siendo yo <b>Angel Chavarría</b> el creador y con la capacidad algorítmica HTML+CSS+JS.</p>
                 <p><b>2. OPTIMIZACIÓN LÓGICA:</b> La estructura del código ha sido auditada para garantizar persistencia de datos y una interfaz de usuario fluida.</p>
                 <p><b>3. SEGURIDAD:</b> Se han implementado protocolos de protección de código para salvaguardar la integridad de los recursos alojados.</p>
             </div>`,
@@ -609,5 +609,3 @@ if (currentUserRole !== 'admin') {
     document.body.style.userSelect = 'auto';
     document.body.style.webkitUserSelect = 'auto';
 }
-
-
