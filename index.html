@@ -278,12 +278,25 @@
     }
 
     #eco-box-content {
-        width: 95%;
+        width: 92%;
         max-width: 450px;
         max-height: 85vh;
         display: flex;
         flex-direction: column;
-        transition: all 0.3s ease;
+        background: #161b22;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+    }
+
+    #eco-header, 
+    #eco-box-content > div:last-child { 
+        flex-shrink: 0;
+    }
+
+    #eco-box-content > div:nth-child(2) {
+        flex-grow: 1;
+        overflow-y: auto;
+        min-height: 0;
     }
 
     @media (min-width: 1024px) {
@@ -292,12 +305,12 @@
         }
     }
 
-    @media (max-height: 600px) {
+    @media (max-height: 700px) {
         #eco-box-content {
-            max-height: 95vh;
+            max-height: 92vh;
         }
         #eco-box-content .p-8 {
-            padding: 1.25rem !important;
+            padding: 1.5rem !important;
         }
     }
 
