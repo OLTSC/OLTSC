@@ -1,5 +1,5 @@
-const MASTER_KEYS = ["a3g7l2a4", "", ""];
-const COLAB_KEYS = ["r4h2y9z2", ""];
+const MASTER_KEYS = ["a3g7l2a4"];
+const COLAB_KEYS = ["r4h2y9z2"];
 let currentUserRole = 'invitado';
 
 let templates = JSON.parse(localStorage.getItem('oltsc_data')) || [
