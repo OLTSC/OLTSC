@@ -269,12 +269,47 @@
 </div>
 
 <style>
-    #eco-info-terminal.is-active {
-        display: flex !important;
-        opacity: 1 !important;
+    #eco-info-terminal.is-active { 
+        display: flex !important; 
+        opacity: 1 !important; 
     }
-    #eco-info-terminal.is-active #eco-box-content {
-        transform: scale(1) !important;
+    #eco-info-terminal.is-active #eco-box-content { 
+        transform: scale(1) !important; 
+    }
+
+    #eco-box-content {
+        width: 95%;
+        max-width: 450px;
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.3s ease;
+    }
+
+    @media (min-width: 1024px) {
+        #eco-box-content {
+            max-width: 750px;
+        }
+    }
+
+    @media (max-height: 600px) {
+        #eco-box-content {
+            max-height: 95vh;
+        }
+        #eco-box-content .p-8 {
+            padding: 1.25rem !important;
+        }
+    }
+
+    .custom-scrollbar::-webkit-scrollbar { 
+        width: 4px; 
+    }
+    .custom-scrollbar::-webkit-scrollbar-track { 
+        background: #0d1117; 
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb { 
+        background: #30363d; 
+        border-radius: 10px; 
     }
 
     .eco-word { border-bottom-color: var(--word) !important; background: linear-gradient(90deg, rgba(43,87,154,0.1), transparent); }
@@ -286,7 +321,6 @@
     .eco-dev { border-bottom-color: var(--dev) !important; background: linear-gradient(90deg, rgba(0,68,130,0.1), transparent); }
     .eco-pseint { border-bottom-color: var(--pseint) !important; background: linear-gradient(90deg, rgba(241,196,15,0.1), transparent); }
 </style>
-
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <script>
