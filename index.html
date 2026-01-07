@@ -3,652 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Angel Chavarría | Office LTSC 2024</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Personal Repo Maestro | Angel Chavarría</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="style.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="font-sans antialiased bg-[#0a0c10] text-[#f0f6fc]">
-
-    <div id="securityOverlay">
-        <div class="bg-[#161b22] p-12 rounded-[2.5rem] border border-red-500/30 text-center max-w-sm mx-4 shadow-2xl">
-            <div class="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <i data-lucide="shield-alert" class="w-10 h-10 text-red-500"></i>
-            </div>
-            <h2 class="text-2xl font-black mb-3 text-white">AVISO IMPORTANTE</h2>
-            <p class="text-slate-400 text-sm leading-relaxed">
-                No tienes permitido ver o intervenir en mi código. <br>
-                Solo yo el Administrador <b>Angel Chavarría</b> puedo realizar estas acciones.
-            </p>
-            <div class="mt-8 pt-6 border-t border-[#30363d] text-[10px] text-slate-500 uppercase tracking-widest">
-                Seguridad ACTIVADA
-            </div>
+<body>
+<div id="securityAlert" class="security-overlay">
+    <div class="security-box">
+        <div class="security-icon">
+            <i data-lucide="shield-alert" style="width: 50px; height: 50px; color: #ff4d4d;"></i>
         </div>
+        <h2>ACCESO RESTRINGIDO</h2>
+        <p>Su dirección IP y actividad han sido registradas en el log del sistema LTSC 2026. El acceso a las herramientas de desarrollo está estrictamente prohibido.</p>
+        <button onclick="hideSecurityAlert()" class="btn-primary-neon">ENTENDIDO</button>
     </div>
-
-<div id="loginModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4">
-    <div class="absolute inset-0 bg-black/95 backdrop-blur-md" onclick="closeModal('loginModal')"></div>
-    
-    <div class="bg-[#161b22] border border-[#30363d] w-full max-w-[340px] rounded-tr-[3rem] rounded-bl-[3rem] rounded-tl-[1rem] rounded-br-[1rem] p-8 relative shadow-2xl text-center transform transition-all border-t-blue-500/30">
+</div>
+<div id="lockScreen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 0.5s;">
+    <div class="security-card" style="text-align: center; background: var(--sidebar-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--border); backdrop-filter: blur(20px);">
+        <i data-lucide="shield-check" style="color: var(--primary); width: 60px; height: 60px; margin-bottom: 20px;"></i>
+        <h2 style="color: white; margin-bottom: 10px; letter-spacing: 1px;">ACCESO RESTRINGIDO</h2>
+        <p style="color: var(--text-dim); font-size: 0.8rem; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px;">
+            REPOSITORIO LTSC 2026 ANGEL CHAVARRIA
+        </p>
         
-        <div class="w-12 h-12 bg-blue-600/5 border border-blue-500/20 rounded-xl flex items-center justify-center mx-auto mb-5 shadow-inner">
-            <i data-lucide="shield-check" class="text-blue-500 w-5 h-5"></i>
-        </div>
-
-        <h2 class="text-xl font-black text-white mb-1 uppercase tracking-tighter">Acceso Seguro</h2>
-        <p class="text-slate-500 text-[9px] font-black uppercase tracking-[0.2em] mb-6 leading-none">Protocolo de Verificación LTSC</p>
+        <input type="password" id="pinInput" placeholder="********" 
+               style="letter-spacing: 8px; text-align: center; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: var(--primary); padding: 12px; border-radius: 8px; width: 100%; margin-bottom: 20px; outline: none;">
         
-        <input type="password" id="loginPassInput" placeholder="••••" 
-            class="w-full px-4 py-3 rounded-xl text-center text-xl tracking-[0.4em] mb-4 border border-[#30363d] bg-[#0d1117] outline-none text-white focus:border-blue-500/50 transition-all placeholder:text-slate-800">
+        <button onclick="checkPin()" class="btn-primary-neon" style="width: 100%;">DESBLOQUEAR</button>
         
-        <button onclick="processLogin()" 
-            class="btn-verify-asimetrico w-full py-4 rounded-tr-2xl rounded-bl-2xl rounded-tl-md rounded-br-md font-black uppercase text-[11px] tracking-[0.2em] transition-all flex items-center justify-center gap-2 active:scale-95 shadow-lg shadow-blue-900/20">
-            <span>Verificar Identidad</span>
-            <i data-lucide="chevron-right" class="w-3 h-3"></i>
-        </button>
-
-        <button onclick="closeModal('loginModal')" class="mt-6 text-slate-600 text-[9px] font-black hover:text-blue-400 uppercase tracking-widest transition-colors block mx-auto">
-            [ Cancelar Operación ]
-        </button>
+        <p id="pinError" style="margin-top: 15px; display: none; color: #ff4d4d; font-size: 0.8rem; font-weight: bold; animation: shake 0.4s ease;">
+            PIN INCORRECTO - ACCESO DENEGADO
+        </p>
     </div>
 </div>
 
-    <header class="fixed w-full top-0 z-50 bg-[#0a0c10]/80 backdrop-blur-xl border-b border-[#30363d]">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-11 h-11 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/20">
-                    <i data-lucide="database" class="text-white w-6 h-6"></i>
-                </div>
-                <div class="min-w-0">
-                    <h1 class="text-xl font-black tracking-tight leading-none">OFFICE LTSC 2024</h1>
-                    <span id="userRoleStatus" class="text-[10px] text-blue-400 font-bold uppercase tracking-[0.2em] mt-1 block">Administrado por Angel Chavarría</span>
-                </div>
+<div id="securityAlert" class="security-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:20000; justify-content:center; align-items:center; backdrop-filter:blur(15px);">
+    <div class="security-box" style="border: 2px solid #ff4d4d; padding: 30px; border-radius: 15px; text-align: center; background: #0a0a0a;">
+        <i data-lucide="shield-alert" style="width: 50px; height: 50px; color: #ff4d4d; margin-bottom: 15px;"></i>
+        <h2 style="color: #ff4d4d;">SISTEMA PROTEGIDO</h2>
+        <p style="color: #8b949e; margin: 15px 0;">Su dirección IP y actividad han sido registradas en el log del sistema LTSC 2026. El acceso a las herramientas de desarrollo está estrictamente prohibido.</p>
+        <button onclick="hideSecurityAlert()" class="btn-primary-neon">REINTENTAR</button>
+    </div>
+</div>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="brand">
+                <i data-lucide="shield-check"></i>
+                <span>LTSC 2026</span>
             </div>
             
-            <div class="flex items-center gap-4">
-                <button id="adminLoginBtn" onclick="openLogin()" class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:bg-[#30363d] hover:text-white transition-all">
-                    <i data-lucide="shield-check" class="w-9 h-9"></i>
+            <nav class="nav-menu">
+                <button class="nav-item active" id="btn-all" onclick="filterRepo('all')">
+                    <i data-lucide="layers"></i> Todos los Archivos
                 </button>
+
+                <p class="nav-label">MS Office Suite</p>
+                <button class="nav-item" onclick="filterRepo('word')"><i data-lucide="file-text"></i> Word</button>
+                <button class="nav-item" onclick="filterRepo('excel')"><i data-lucide="sheet"></i> Excel</button>
+                <button class="nav-item" onclick="filterRepo('powerpoint')"><i data-lucide="presentation"></i> PowerPoint</button>
+                <button class="nav-item" onclick="filterRepo('access')"><i data-lucide="database"></i> Access</button>
+                <button class="nav-item" onclick="filterRepo('visio')"><i data-lucide="network"></i> Visio</button>
+                <button class="nav-item" onclick="filterRepo('project')"><i data-lucide="calendar-range"></i> Project</button>
                 
-                <button onclick="openUploadModal()" class="colab-only bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-bold transition-all transform active:scale-95 flex items-center gap-2 shadow-lg shadow-blue-900/30">
-                    <i data-lucide="plus-circle" class="w-5 h-5"></i> <span class="hidden sm:inline">Subir Archivo</span>
+                <p class="nav-label">MS Cloud & Power</p>
+                <button class="nav-item" onclick="filterRepo('powerbi')"><i data-lucide="bar-chart-3"></i> Power BI</button>
+                <button class="nav-item" onclick="filterRepo('automate')"><i data-lucide="zap"></i> Power Automate</button>
+                <button class="nav-item" onclick="filterRepo('onenote')"><i data-lucide="sticky-note"></i> OneNote</button>
+                <button class="nav-item" onclick="filterRepo('tdo')"><i data-lucide="check-square"></i> To Do</button>
+                <button class="nav-item" onclick="filterRepo('forms')"><i data-lucide="list-todo"></i> Forms</button>
+                <button class="nav-item" onclick="filterRepo('loop')"><i data-lucide="rotate-cw"></i> Loop</button>
+
+                <p class="nav-label">Desarrollo & Lógica</p>
+                <button class="nav-item" onclick="filterRepo('cpp')"><i data-lucide="code-2"></i> C++ / Dev++</button>
+                <button class="nav-item" onclick="filterRepo('pseint')"><i data-lucide="terminal"></i> PSeInt</button>
+                <button class="nav-item" onclick="filterRepo('html')"><i data-lucide="file-code"></i> HTML5</button>
+                <button class="nav-item" onclick="filterRepo('css')"><i data-lucide="palette"></i> CSS3</button>
+                <button class="nav-item" onclick="filterRepo('js')"><i data-lucide="scroll"></i> JavaScript</button>
+                
+                <p class="nav-label">Multimedia</p>
+                <button class="nav-item" onclick="filterRepo('pictures')"><i data-lucide="image"></i> Pictures</button>
+                <button class="nav-item" onclick="filterRepo('mp3')"><i data-lucide="music"></i> MP3 / Audio</button>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Repositorio Personal</h1>
+                <button class="btn-primary" onclick="openModal()">
+                    <i data-lucide="plus"></i> Agregar Archivo
                 </button>
-            </div>
-        </div>
-    </header>
-
-    <main class="pt-36 pb-24 max-w-7xl mx-auto px-6 min-h-screen">
-<div class="header-master-container flex flex-col justify-center min-h-[40vh] lg:min-h-[50vh] mb-16 relative">
-    
-    <div class="absolute -left-6 top-1/2 -translate-y-1/2 w-1.5 h-32 bg-gradient-to-b from-blue-600 to-transparent rounded-full blur-[2px] opacity-70"></div>
-    
-    <div class="relative z-10">
-        <div class="flex items-center gap-4 text-blue-500 mb-6 animate-pulse-slow">
-            <div class="p-2 bg-blue-500/10 rounded-lg">
-                <i data-lucide="layout-grid" class="w-5 h-5"></i>
-            </div>
-            <span class="font-black uppercase tracking-[0.4em] text-[10px] sm:text-[12px]">Sistema de Gestión Digital v2.0</span>
-        </div>
-
-        <h2 class="text-6xl md:text-7xl font-black tracking-tighter text-white mb-10 leading-[0.9]">
-            Repositorio Maestro <br>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-600 to-indigo-600">
-                de Plantillas
-            </span>
-        </h2>
-        <div id="audioContainer" class="fixed bottom-6 left-6 z-[11001] flex items-center gap-3">
-    <button id="musicToggle" class="music-btn" onclick="toggleMusic()">
-        <i data-lucide="music" id="musicIcon" class="w-5 h-5"></i>
-        <div class="music-waves">
-            <span></span><span></span><span></span>
-        </div>
-    </button>
-    <div class="flex flex-col">
-        <span id="musicStatus" class="text-[8px] font-black uppercase tracking-[0.2em] text-slate-500">System Audio</span>
-        <span id="trackName" class="text-[7px] text-slate-600 font-bold truncate w-24">AMBIE-TECH v1.0</span>
+            </header>
+            <div id="repoGrid" class="repo-grid"></div>
+        </main>
+        <footer class="repo-footer">
+    <div class="footer-section">
+        <span class="status-dot"></span>
+        <p>Sistema Online</p>
     </div>
-    <audio id="bgMusic" loop>
-        <source src="SAINt JHN - Roses (Imanbek Remix) (Official Music Video).mp3" type="audio/mpeg">
-    </audio>
-</div>
-        
-        <div class="relative w-full max-w-2xl group">
-            <div class="absolute inset-0 bg-blue-600/20 blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500"></div>
-            <i data-lucide="search" class="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-500 group-focus-within:text-blue-400 transition-all z-20"></i>
-            <input type="text" id="searchInput" oninput="searchTemplates()" 
-                placeholder="Buscar en el repositorio maestro..." 
-                class="relative z-10 bg-[#0d1117]/80 backdrop-blur-md border border-[#30363d] pl-14 pr-6 py-6 rounded-2xl text-xl w-full focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none shadow-2xl text-white placeholder:text-slate-600">
-            
-            <div class="absolute right-4 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-1 z-20">
-                <kbd class="px-2 py-1 bg-[#161b22] border border-[#30363d] rounded text-[10px] text-slate-500 font-mono">CTRL</kbd>
-                <kbd class="px-2 py-1 bg-[#161b22] border border-[#30363d] rounded text-[10px] text-slate-500 font-mono">K</kbd>
-            </div>
-        </div>
+    <div class="footer-divider"></div>
+    <div class="footer-section">
+        <p class="version-tag">Build: v2.0.26</p>
     </div>
-</div>
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-5 mb-16">
-            <button onclick="filterTemplates('word')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#2b579a] hover:bg-[#2b579a]/5 transition-all group">
-                <i data-lucide="file-text" class="text-[#2b579a] w-9 h-9 group-hover:scale-110 transition"></i>
-                <span class="text-xs font-black uppercase tracking-widest text-white">Word</span>
-            </button>
-            <button onclick="filterTemplates('excel')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#217346] hover:bg-[#217346]/5 transition-all group">
-                <i data-lucide="sheet" class="text-[#217346] w-9 h-9 group-hover:scale-110 transition"></i>
-                <span class="text-xs font-black uppercase tracking-widest text-white">Excel</span>
-            </button>
-            <button onclick="filterTemplates('powerpoint')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#b7472a] hover:bg-[#b7472a]/5 transition-all group">
-                <i data-lucide="presentation" class="text-[#b7472a] w-9 h-9 group-hover:scale-110 transition"></i>
-                <span class="text-xs font-black uppercase tracking-widest text-white">PPT</span>
-            </button>
-            <button onclick="filterTemplates('access')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#a4373a] hover:bg-[#a4373a]/5 transition-all group">
-                <i data-lucide="database" class="text-[#a4373a] w-9 h-9 group-hover:scale-110 transition"></i>
-                <span class="text-xs font-black uppercase tracking-widest text-white">Access</span>
-            </button>
-            <button onclick="filterTemplates('visio')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#3955a3] hover:bg-[#3955a3]/5 transition-all group">
-                <i data-lucide="network" class="text-[#3955a3] w-9 h-9 group-hover:scale-110 transition"></i>
-                <span class="text-xs font-black uppercase tracking-widest text-white">Visio</span>
-            </button>
-            <button onclick="filterTemplates('project')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#31752f] hover:bg-[#31752f]/5 transition-all group">
-                <i data-lucide="calendar-range" class="text-[#31752f] w-9 h-9 group-hover:scale-110 transition"></i>
-                <span class="text-xs font-black uppercase tracking-widest text-white">Project</span>
-            </button>
-            <button onclick="filterTemplates('dev')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#004482] hover:bg-[#004482]/5 transition-all group">
-                <i data-lucide="code-2" class="text-[#004482] w-9 h-9 group-hover:scale-110 transition"></i>
-                <span class="text-xs font-black uppercase tracking-widest text-white">DEV++</span>
-            </button>
-            <button onclick="filterTemplates('pseint')" class="p-6 rounded-2xl bg-[#161b22] border border-[#30363d] flex flex-col items-center gap-4 hover:border-[#f1c40f] hover:bg-[#f1c40f]/5 transition-all group">
-                <i data-lucide="terminal" class="text-[#f1c40f] w-9 h-9 group-hover:scale-110 transition"></i>
-                <span class="text-xs font-black uppercase tracking-widest text-white">PSeInt</span>
-            </button>
-        </div>
-
-        <div id="templatesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
-
-        <section class="mt-32 relative">
-            <div class="absolute inset-0 bg-blue-600/5 blur-[120px] rounded-full"></div>
-            <div class="max-w-4xl mx-auto bg-[#161b22] p-8 md:p-16 rounded-[3rem] border border-[#30363d] relative overflow-hidden">
-                <div class="flex flex-col items-center text-center mb-10">
-                    <div class="w-16 h-16 bg-blue-600/10 rounded-2xl flex items-center justify-center mb-6">
-                        <i data-lucide="user-plus" class="text-blue-500 w-8 h-8"></i>
-                    </div>
-                    <h3 class="text-3xl font-black mb-4 text-white">Únete como Colaborador</h3>
-                    <p class="text-slate-400 max-w-md">Solicita acceso para contribuir con tus plantillas al repositorio central administrado por Angel Chavarría.</p>
-                </div>
-
-                <form id="colaboradorForm" action="https://formsubmit.co/manuelguevarachavarria@outlook.es" method="POST" class="space-y-6 text-white">
-                    <input type="hidden" name="_next" value="https://oltsc.github.io/OLTSC/">
-                    <input type="hidden" name="_captcha" value="false">
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-4">Nombre Completo</label>
-                            <input type="text" name="Nombre" placeholder="Ej. Juan Pérez" required class="px-6 py-4 rounded-2xl w-full bg-[#0d1117] border border-[#30363d] outline-none">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-4">Email Corporativo</label>
-                            <input type="email" name="Email" placeholder="correo@ejemplo.com" required class="px-6 py-4 rounded-2xl w-full bg-[#0d1117] border border-[#30363d] outline-none">
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-4">Propuesta de colaboración</label>
-                        <textarea name="Mensaje" placeholder="¿Qué tipo de plantillas deseas compartir?" rows="4" class="w-full px-6 py-4 rounded-2xl bg-[#0d1117] border border-[#30363d] outline-none"></textarea>
-                    </div>
-<button type="submit" class="btn-solicitud-asimetrico group w-full py-5 rounded-tr-[2rem] rounded-bl-[2rem] rounded-tl-lg rounded-br-lg font-black uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3 active:scale-[0.98]">
-    <i data-lucide="send" class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i> 
-    <span>Enviar Solicitud de Acceso</span>
-</button>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <footer class="bg-[#0d1117] border-t border-[#30363d] pt-20 pb-12 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
-            <div class="col-span-1 md:col-span-2">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/20">
-                        <i data-lucide="layout-template" class="text-white w-6 h-6"></i>
-                    </div>
-                    <span class="text-2xl font-black tracking-tighter text-white">OLTSC 2024</span>
-                </div>
-                <p class="text-slate-400 max-w-md leading-relaxed text-sm">
-                    Repositorio privado de alto rendimiento administrado exclusivamente por <b>Angel Chavarría</b>. 
-                    Diseñado para la centralización de herramientas ofimáticas bajo estándares LTSC.
-                </p>
-                <div class="mt-8 flex gap-4">
-                    <div class="px-4 py-2 bg-[#161b22] border border-[#30363d] rounded-full text-[10px] font-bold text-blue-400 uppercase tracking-widest">v2.4 Stable</div>
-                    <div class="px-4 py-2 bg-[#161b22] border border-[#30363d] rounded-full text-[10px] font-bold text-green-400 uppercase tracking-widest">Online</div>
-                </div>
-            </div>
-<div>
-    <h4 class="font-black mb-8 text-white uppercase text-xs tracking-[0.3em]">Ecosistemas</h4>
-    <ul class="text-slate-400 space-y-4 text-sm font-medium">
-        <li><a href="javascript:void(0)" data-eco="soft_word" class="hover:text-blue-600 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Microsoft Office LTSC Word</a></li>
-        <li><a href="javascript:void(0)" data-eco="soft_excel" class="hover:text-green-600 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Microsoft Office LTSC Excel</a></li>
-        <li><a href="javascript:void(0)" data-eco="soft_pp" class="hover:text-orange-500 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Microsoft Office LTSC PowerPoint</a></li>
-        <li><a href="javascript:void(0)" data-eco="soft_access" class="hover:text-red-500 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Microsoft Office LTSC Access</a></li>
-        <li><a href="javascript:void(0)" data-eco="soft_visio" class="hover:text-blue-800 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Microsoft Office LTSC Visio</a></li>
-        <li><a href="javascript:void(0)" data-eco="soft_project" class="hover:text-green-700 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>Microsoft office LTSC Project</a></li>
-        <li><a href="javascript:void(0)" data-eco="soft_dev" class="hover:text-blue-500 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>DEV++ Coding</a></li>
-        <li><a href="javascript:void(0)" data-eco="soft_pseint" class="hover:text-yellow-500 transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-3 h-3"></i>PSeInt Logic</a></li>
-    </ul>
-</div>
-
-<div id="eco-info-terminal" style="display: none;" class="fixed inset-0 z-[99999] flex items-center justify-center bg-[#0a0c10]/95 backdrop-blur-xl p-4 transition-all duration-300 opacity-0">
-    <div id="eco-box-content" class="bg-[#161b22] border-2 border-[#30363d] rounded-[4px_30px_4px_30px] shadow-2xl max-w-md w-full overflow-hidden transform scale-95 transition-all duration-300">
-        
-        <div id="eco-header" class="p-5 flex justify-between items-center border-b-2">
-            <div class="flex items-center gap-4">
-                <div class="p-2 rounded-lg bg-white/5 border border-white/10" id="eco-icon-box"></div>
-                <div>
-                    <h3 id="eco-title" class="font-black text-white uppercase tracking-wider text-sm"></h3>
-                    <span class="text-[9px] text-slate-500 font-bold uppercase tracking-[0.2em]">Data Ecosystem Access</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="p-8 space-y-6">
-            <div>
-                <h4 class="text-[#0078d4] uppercase text-[10px] font-black tracking-widest mb-2 flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 bg-[#0078d4] rounded-full animate-pulse"></span> Especificación Técnica
-                </h4>
-                <p id="eco-def" class="text-slate-300 text-xs leading-relaxed font-medium"></p>
-            </div>
-            
-            <div class="p-4 bg-[#0d1117] border border-[#30363d] rounded-[4px_15px_4px_15px]">
-                <h4 class="text-slate-500 uppercase text-[10px] font-black tracking-widest mb-2">Implementación Local</h4>
-                <p id="eco-purpose" class="text-slate-400 text-xs italic leading-relaxed"></p>
-            </div>
-        </div>
-
-        <div class="bg-[#0d1117]/50 p-4 flex justify-end border-t border-[#30363d]">
-            <button type="button" id="btn-close-terminal" class="btn-solicitud-asimetrico !py-2 !px-8 !mb-0 !w-auto !text-[10px] cursor-pointer">
-                Confirmar y Salir
-            </button>
-        </div>
+    <div class="footer-divider"></div>
+    <div class="footer-section">
+        <p>&copy; 2026 <span class="brand-name">Angel Chavarría</span></p>
     </div>
-</div>
-
-<style>
-    #eco-info-terminal.is-active { 
-        display: flex !important; 
-        opacity: 1 !important; 
-    }
-    #eco-info-terminal.is-active #eco-box-content { 
-        transform: scale(1) !important; 
-    }
-
-    #eco-box-content {
-        width: 92%;
-        max-width: 450px;
-        max-height: 85vh;
-        display: flex;
-        flex-direction: column;
-        background: #161b22;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        overflow: hidden;
-    }
-
-    #eco-header, 
-    #eco-box-content > div:last-child { 
-        flex-shrink: 0;
-    }
-
-    #eco-box-content > div:nth-child(2) {
-        flex-grow: 1;
-        overflow-y: auto;
-        min-height: 0;
-    }
-
-    @media (min-width: 1024px) {
-        #eco-box-content {
-            max-width: 750px;
-        }
-    }
-
-    @media (max-height: 700px) {
-        #eco-box-content {
-            max-height: 92vh;
-        }
-        #eco-box-content .p-8 {
-            padding: 1.5rem !important;
-        }
-    }
-
-    .custom-scrollbar::-webkit-scrollbar { 
-        width: 4px; 
-    }
-    .custom-scrollbar::-webkit-scrollbar-track { 
-        background: #0d1117; 
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb { 
-        background: #30363d; 
-        border-radius: 10px; 
-    }
-
-    .eco-word { border-bottom-color: var(--word) !important; background: linear-gradient(90deg, rgba(43,87,154,0.1), transparent); }
-    .eco-excel { border-bottom-color: var(--excel) !important; background: linear-gradient(90deg, rgba(33,115,70,0.1), transparent); }
-    .eco-pp { border-bottom-color: var(--powerpoint) !important; background: linear-gradient(90deg, rgba(183,71,42,0.1), transparent); }
-    .eco-access { border-bottom-color: var(--access) !important; background: linear-gradient(90deg, rgba(164,55,58,0.1), transparent); }
-    .eco-visio { border-bottom-color: var(--visio) !important; background: linear-gradient(90deg, rgba(57,85,163,0.1), transparent); }
-    .eco-project { border-bottom-color: var(--project) !important; background: linear-gradient(90deg, rgba(49,117,47,0.1), transparent); }
-    .eco-dev { border-bottom-color: var(--dev) !important; background: linear-gradient(90deg, rgba(0,68,130,0.1), transparent); }
-    .eco-pseint { border-bottom-color: var(--pseint) !important; background: linear-gradient(90deg, rgba(241,196,15,0.1), transparent); }
-</style>
-<script src="https://unpkg.com/lucide@latest"></script>
-
-<script>
-const ecoSystemMap = {
-        soft_word: { 
-            title: "Microsoft Word LTSC Professional", 
-            icon: "file-text", 
-            theme: "eco-word", 
-            d: "Sistema avanzado de procesamiento de activos textuales diseñado para la arquitectura de documentos técnicos de alta complejidad. Word LTSC permite la gestión semántica de información, la integración de metadatos estructurados y la generación de documentación con estándares de cumplimiento corporativo. Implementa motores de renderizado tipográfico de precisión y sistemas de corrección algorítmica de última generación para garantizar la integridad comunicativa del ecosistema digital.", 
-            p: "Este módulo se utiliza para la creación y estandarización de manuales operativos, reportes de incidentes técnicos y toda la documentación de soporte que rige los protocolos internos del sitio, asegurando una transferencia de conocimiento sin pérdida de fidelidad entre los departamentos técnicos." 
-        },
-        soft_excel: { 
-            title: "Microsoft Excel LTSC Enterprise", 
-            icon: "table", 
-            theme: "eco-excel", 
-            d: "Plataforma analítica de procesamiento de datos multidimensionales. Este componente es el núcleo de cálculo del sistema, capaz de gestionar extensas matrices de información, tablas dinámicas vinculadas y modelos predictivos mediante funciones lógicas complejas. Excel LTSC actúa como un puente de inteligencia de negocios para la visualización de métricas críticas, permitiendo el filtrado y segmentación de datos masivos en tiempo real bajo un entorno de estabilidad Long Term Service Channel.", 
-            p: "Implementado para el control riguroso de auditorías, seguimiento de métricas de rendimiento del sitio, gestión financiera de recursos y el mantenimiento de bases de datos administrativas que alimentan los cuadros de mando operativos." 
-        },
-        soft_pp: { 
-            title: "Microsoft PowerPoint LTSC Visualizer", 
-            icon: "presentation", 
-            theme: "eco-pp", 
-            d: "Motor de comunicación visual y diseño de interfaces informativas. PowerPoint LTSC proporciona las herramientas necesarias para la síntesis de conceptos técnicos en capas visuales digeribles. Utiliza un sistema de capas multimedia para la creación de flujos narrativos que explican arquitecturas complejas, despliegues de red y estrategias operativas, integrando activos gráficos dinámicos y transiciones de alto impacto que mantienen la atención del usuario final.", 
-            p: "Su finalidad principal es la generación de guías interactivas y presentaciones de estado para los ecosistemas digitales, facilitando la inducción de nuevos usuarios y la exposición de hitos de desarrollo ante el comité técnico del proyecto." 
-        },
-        soft_access: { 
-            title: "Microsoft Access LTSC Database Core", 
-            icon: "database", 
-            theme: "eco-access", 
-            d: "Sistema de gestión de bases de datos relacionales diseñado para la administración de activos de nivel intermedio. Access LTSC permite la creación de estructuras de datos vinculadas, formularios de entrada personalizados y generadores de informes que interactúan con el motor de SQL local. Proporciona un entorno robusto para el almacenamiento organizado de entidades, permitiendo consultas complejas (queries) que extraen información específica de entre miles de registros con latencia mínima.", 
-            p: "Se encarga del mantenimiento de los catálogos de hardware, registros de usuarios del sistema y la gestión de inventarios de activos digitales, sirviendo como la fuente de verdad para los procesos de logística interna del sitio." 
-        },
-        soft_visio: { 
-            title: "Microsoft Visio LTSC Architecture", 
-            icon: "git-fork", 
-            theme: "eco-visio", 
-            d: "Herramienta especializada en la esquematización lógica y visualización de topologías complejas. Visio LTSC ofrece una biblioteca extensa de notaciones industriales (UML, BPMN, IEEE) para mapear infraestructuras de red, diagramas de flujo de datos y organigramas operativos. Su motor de vectores permite representar con absoluta precisión la interconexión entre nodos de hardware y módulos de software, facilitando la comprensión de dependencias críticas en sistemas distribuidos.", 
-            p: "Esencial para el diseño y actualización constante de los planos de arquitectura de red del ecosistema, permitiendo visualizar los cuellos de botella y las rutas de redundancia en la infraestructura técnica del sitio." 
-        },
-        soft_project: { 
-            title: "Microsoft Project LTSC Manager", 
-            icon: "calendar-days", 
-            theme: "eco-project", 
-            d: "Software de gestión de ciclo de vida de proyectos y administración de recursos críticos. Project LTSC implementa algoritmos de cálculo de ruta crítica (CPM), diagramas de Gantt dinámicos y sistemas de nivelación de recursos para garantizar que los objetivos técnicos se cumplan dentro de los plazos establecidos. Permite la asignación de costos, la medición del progreso real frente al planificado y la mitigación de riesgos operativos mediante simulaciones de carga de trabajo.", 
-            p: "Utilizado para el seguimiento milimétrico de los cronogramas de actualización del sistema y la coordinación de tareas entre los distintos desarrolladores, asegurando que cada fase del ecosistema se despliegue sin retrasos." 
-        },
-        soft_dev: { 
-            title: "DEV++ Integrated Coding Suite", 
-            icon: "code-2", 
-            theme: "eco-dev", 
-            d: "Entorno de desarrollo integrado (IDE) optimizado para la compilación de lenguajes de bajo nivel como C y C++. Esta suite de codificación proporciona un compilador de alta eficiencia, depurador en tiempo real y herramientas de gestión de memoria que son vitales para la optimización del rendimiento del núcleo del sistema. Soporta bibliotecas estáticas y dinámicas, permitiendo el desarrollo de algoritmos de alta velocidad y controladores de hardware que interactúan directamente con la capa física de los dispositivos.", 
-            p: "Su función es el mantenimiento preventivo y correctivo del core algorítmico del ecosistema, garantizando que el código subyacente sea eficiente, seguro y esté libre de fugas de memoria que puedan comprometer la estabilidad." 
-        },
-        soft_pseint: { 
-            title: "PSeInt Logic Design & Prototype", 
-            icon: "brain-circuit", 
-            theme: "eco-pseint", 
-            d: "Plataforma de ingeniería lógica orientada al diseño y validación de pseudocódigo estructural. PSeInt permite el prototipado rápido de flujos de control, bucles iterativos y estructuras de decisión antes de su transcodificación a lenguajes de producción. Implementa un motor de ejecución paso a paso que ayuda a identificar errores de lógica y redundancias en los algoritmos, asegurando que la arquitectura del pensamiento computacional sea impecable desde su concepción.", 
-            p: "Actúa como la fase de pre-producción para todos los nuevos procesos lógicos implementados en el sitio, sirviendo para validar cada nueva funcionalidad antes de que un solo bit de código real sea escrito." 
-        }
-    };
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const terminal = document.getElementById('eco-info-terminal');
-        const closeBtn = document.getElementById('btn-close-terminal');
-
-        const closeTerminal = (e) => {
-            if(e) { e.preventDefault(); e.stopPropagation(); }
-            terminal.classList.remove('is-active');
-            setTimeout(() => { terminal.style.display = 'none'; }, 300);
-        };
-
-        closeBtn.addEventListener('click', closeTerminal);
-
-        document.addEventListener('click', (e) => {
-            const trigger = e.target.closest('[data-eco]');
-            if (trigger) {
-                e.preventDefault();
-                e.stopPropagation();
-                const key = trigger.getAttribute('data-eco');
-                const data = ecoSystemMap[key];
-
-                if (data) {
-                    document.getElementById('eco-title').innerText = data.title;
-                    document.getElementById('eco-def').innerText = data.d;
-                    document.getElementById('eco-purpose').innerText = data.p;
-                    document.getElementById('eco-icon-box').innerHTML = `<i data-lucide="${data.icon}" class="w-6 h-6 text-white"></i>`;
-                    document.getElementById('eco-header').className = `p-5 flex justify-between items-center border-b-2 ${data.theme}`;
-                    
-                    if(window.lucide) lucide.createIcons();
-
-                    terminal.style.display = 'flex';
-                    setTimeout(() => terminal.classList.add('is-active'), 10);
-                }
-            }
-        });
-
-        terminal.addEventListener('click', (e) => {
-            if (e.target === terminal) closeTerminal(e);
-        });
-    });
-</script>
-
-            <div>
-    <h4 class="font-black mb-8 text-white uppercase text-xs tracking-[0.3em]">Legales</h4>
-    <ul class="text-slate-400 space-y-4 text-sm font-medium">
-        <li>
-            <a href="javascript:void(0)" onclick="openLegalModal('Términos de Uso')" class="hover:text-white transition-colors flex items-center gap-2">
-                <i data-lucide="chevron-right" class="w-3 h-3 text-slate-500"></i> Términos de Uso
-            </a>
-        </li>
-        <li>
-            <a href="javascript:void(0)" onclick="openLegalModal('Condiciones Generales')" class="hover:text-white transition-colors flex items-center gap-2">
-                <i data-lucide="chevron-right" class="w-3 h-3 text-slate-500"></i> Condiciones Generales
-            </a>
-        </li>
-        <li>
-            <a href="javascript:void(0)" onclick="openLegalModal('Políticas de Cookies')" class="hover:text-white transition-colors flex items-center gap-2">
-                <i data-lucide="chevron-right" class="w-3 h-3 text-slate-500"></i> Políticas de Cookies
-            </a>
-        </li>
-        <li>
-            <a href="javascript:void(0)" onclick="openLegalModal('Privacidad de Datos')" class="hover:text-white transition-colors flex items-center gap-2">
-                <i data-lucide="chevron-right" class="w-3 h-3 text-slate-500"></i> Privacidad de Datos
-            </a>
-        </li>
-        <div class="mt-4">
-    <button onclick="openLegalModal('Arquitectura')" 
-            class="flex items-center gap-4 p-2 pr-6 rounded-2xl bg-blue-500/5 border border-blue-500/20 hover:bg-blue-500/10 hover:border-blue-500/40 transition-all duration-300 group shadow-lg shadow-blue-500/5">
-        
-        <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300">
-            <i data-lucide="cpu" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
-        </div>
-        
-        <div class="flex flex-col items-start">
-            <span class="text-[10px] text-blue-400 font-black uppercase tracking-[0.2em] leading-none mb-1">Arquitectura</span>
-            <span class="text-[12px] text-white font-black uppercase tracking-widest leading-none">2021-2026</span>
-        </div>
-    </button>
-</div>
-<li class="pt-4">
-    <a href="javascript:void(0)" onclick="openCreatorModal()" 
-       class="group flex items-center gap-4 p-2 pr-8 rounded-[1.5rem] bg-red-600/5 border border-red-600/20 hover:border-red-600/50 hover:bg-red-600/10 transition-all duration-500 shadow-lg shadow-red-900/5 w-fit">
-        
-        <div class="w-10 h-10 rounded-xl bg-red-600/10 flex items-center justify-center text-red-500 group-hover:bg-red-600 group-hover:text-white transition-all duration-500">
-            <i data-lucide="gavel" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
-        </div>
-        
-        <div class="flex flex-col items-start">
-            <span class="text-[9px] text-red-400 font-black uppercase tracking-[0.2em] leading-none mb-1 opacity-70">Expediente</span>
-            <span class="text-[12px] text-white font-black uppercase tracking-widest leading-none">Del Creador</span>
-        </div>
-    </a>
-</li>
-    </ul>
-</div>
-
-<div id="creatorModal" class="fixed inset-0 z-[10000] hidden items-center justify-center p-4">
-    <div class="absolute inset-0 bg-black/95 backdrop-blur-2xl" onclick="closeModal('creatorModal')"></div>
-    
-    <div class="bg-[#0d1117] border-2 border-red-600/50 w-full max-w-2xl rounded-[3rem] p-8 md:p-12 relative shadow-[0_0_50px_rgba(220,38,38,0.2)] text-white transform transition-all overflow-hidden flex flex-col max-h-[90vh]">
-        
-        <div class="flex items-center gap-5 mb-8 border-b border-red-600/20 pb-6">
-            <div class="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center shadow-lg shadow-red-900/40 shrink-0">
-                <i data-lucide="user-check" class="w-10 h-10 text-white"></i>
-            </div>
-            <div class="flex flex-col">
-                <h3 class="text-red-600 font-black uppercase text-xs tracking-[0.4em] mb-1">Expediente Legal y Autoría</h3>
-                <h2 class="text-3xl font-black tracking-tight text-white uppercase leading-none">Angel Chavarría</h2>
-                <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em] mt-1">Administrador Único y Desarrollador</p>
-            </div>
-        </div>
-
-        <div class="overflow-y-auto pr-4 text-slate-300 leading-relaxed space-y-6 text-sm custom-scrollbar">
-            
-            <div class="bg-red-600/5 border-l-4 border-red-600 p-6 rounded-r-2xl">
-                <h4 class="text-white font-black uppercase text-xs mb-2 tracking-widest">Propósito del Proyecto</h4>
-                <p>Este repositorio ha sido diseñado exclusivamente para la centralización y gestión de herramientas ofimáticas bajo estándares LTSC. Su arquitectura es privada, protegida y de uso restringido.</p>
-            </div>
-
-            <div class="space-y-4 px-2">
-                <h4 class="text-white font-black uppercase text-xs tracking-widest flex items-center gap-2">
-                    <i data-lucide="shield-alert" class="w-4 h-4 text-red-500"></i>
-                    Descargo de Responsabilidad (Uploads)
-                </h4>
-                <p>El Administrador <b>no se hace responsable</b> por el contenido de los archivos subidos por colaboradores. Si un usuario ingresa archivos inapropiados, maliciosos o que infrinjan derechos de autor externos, la responsabilidad legal recae única y exclusivamente sobre el emisor del archivo.</p>
-            </div>
-
-            <div class="bg-black border border-[#30363d] p-6 rounded-2xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-2 opacity-10">
-                    <i data-lucide="gavel" class="w-12 h-12"></i>
-                </div>
-                <h4 class="text-red-500 font-black uppercase text-xs mb-2 tracking-widest">Advertencia de Seguridad Industrial</h4>
-                <p class="text-white font-bold italic mb-3">"Cualquier intento de manipulación, copia, clonación o intervención de este código en GitHub sin mi autorización expresa será tratado como un delito informático."</p>
-                <p class="text-[11px] text-slate-500 leading-normal">Me reservo el derecho de ejercer acciones penales bajo leyes de Propiedad Intelectual y normativas internacionales de Ciberseguridad contra cualquier individuo que comprometa la integridad de este repositorio maestro.</p>
-            </div>
-        </div>
-
-        <div class="mt-10 pt-6 border-t border-[#30363d] flex flex-col sm:flex-row gap-4 justify-between items-center">
-            <a href="ACCIONES LEGALES OLTSC.pdf" download class="flex items-center gap-3 bg-white text-black px-6 py-4 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-red-600 hover:text-white transition-all shadow-xl active:scale-95 group">
-                <i data-lucide="file-warning" class="w-5 h-5 group-hover:animate-bounce"></i> 
-                Descargar Expediente de Acciones Legales OLTSC
-            </a>
-            
-            <button onclick="closeModal('creatorModal')" class="text-slate-500 hover:text-white font-black uppercase text-[10px] tracking-widest transition-all">
-                Entendido y Aceptado
-            </button>
-        </div>
-    </div>
-</div>
-
-
-
-
-        </div>
-        
-        <div class="max-w-7xl mx-auto px-6 pt-10 border-t border-[#30363d] flex flex-col md:flex-row justify-between items-center gap-8">
-            <p class="text-slate-500 text-[11px] font-bold uppercase tracking-widest text-center">
-                &copy; 2021-2026 Todos los Derechos Reservados por <span class="text-white">Angel Chavarría</span>
-            </p>
-<div class="flex gap-6">
-    <a href="https://whatsapp.com/channel/0029VbBvbRVGOj9fYAT9EF02" 
-       target="_blank" 
-       rel="noopener noreferrer" 
-       class="social-link social-whatsapp" 
-       title="WhatsApp">
-        <i data-lucide="message-circle" class="w-6 h-6"></i>
-    </a>
-
-    <a href="https://www.facebook.com/share/17LKDP4xow/" 
-       target="_blank" 
-       rel="noopener noreferrer" 
-       class="social-link social-facebook" 
-       title="Facebook">
-        <i data-lucide="facebook" class="w-6 h-6"></i>
-    </a>
-
-    <a href="https://youtube.com/@tuangelitoguardian/community?si=svUK2dRRm3gPY7Oy" 
-       target="_blank" 
-       rel="noopener noreferrer" 
-       class="social-link social-youtube" 
-       title="YouTube">
-        <i data-lucide="youtube" class="w-6 h-6"></i>
-    </a>
-
-    <a href="https://t.me/boost/oltsc_angelchavarria" 
-       target="_blank" 
-       rel="noopener noreferrer" 
-       class="social-link social-telegram" 
-       title="Telegram">
-        <i data-lucide="send" class="w-6 h-6"></i>
-    </a>
-</div>
-        </div>
-    </footer>
-
-    <div id="uploadModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="closeModal('uploadModal')"></div>
-        <div class="bg-[#161b22] border border-[#30363d] w-full max-w-md rounded-[2.5rem] p-10 relative shadow-2xl text-white transform transition-all">
-            <div class="mb-8">
-                <h2 class="text-3xl font-black tracking-tight">Nuevo Recurso</h2>
-                <p class="text-slate-400 text-sm mt-2">Completa los datos para subir la plantilla.</p>
-            </div>
-            
-            <form id="uploadForm" class="space-y-5">
-                <div class="space-y-2">
-                    <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-4">Software</label>
-                    <select id="softwareType" required class="w-full px-5 py-4 rounded-2xl bg-[#0d1117] border border-[#30363d] outline-none">
-                        <option value="word">Microsoft Word (.dotx)</option>
-                        <option value="excel">Microsoft Excel (.xltx)</option>
-                        <option value="powerpoint">Microsoft PowerPoint (.potx)</option>
-                        <option value="access">Microsoft Access (.accdb)</option>
-                        <option value="visio">Microsoft Visio (.vstx)</option>
-                        <option value="project">Microsoft Project (.mpt)</option>
-                        <option value="dev">DEV++ (.cpp)</option>
-                        <option value="pseint">PSeInt (.psc)</option>
-                    </select>
-                </div>
-                
-                <div class="space-y-2">
-                    <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-4">Nombre de Plantilla</label>
-                    <input type="text" id="templateName" required placeholder="Ej. Facturación V1.2" class="w-full px-5 py-4 rounded-2xl bg-[#0d1117] border border-[#30363d] outline-none">
-                </div>
-
-                <input type="file" id="realFileInput" class="hidden" onchange="updateFileStatus()">
-                <div class="upload-zone rounded-3xl p-10 text-center cursor-pointer group" onclick="document.getElementById('realFileInput').click()">
-                    <div class="w-14 h-14 bg-[#30363d] rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-600/20 transition">
-                        <i data-lucide="file-up" class="w-7 h-7 text-slate-400 group-hover:text-blue-500 transition"></i>
-                    </div>
-                    <span id="fileStatusText" class="text-xs font-bold text-slate-500 uppercase tracking-widest">Seleccionar Archivo</span>
-                </div>
-
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 py-5 rounded-2xl font-black uppercase tracking-widest transition-all">Procesar y Subir</button>
-            </form>
-            <button onclick="closeModal('uploadModal')" class="absolute top-6 right-6 text-slate-500 hover:text-white transition"><i data-lucide="x"></i></button>
-        </div>
+</footer>
     </div>
 
-    <div id="legalModal" class="fixed inset-0 z-[1000] hidden items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="closeModal('legalModal')"></div>
-        <div class="bg-[#161b22] border border-[#30363d] w-full max-w-2xl rounded-[2.5rem] p-8 md:p-12 relative shadow-2xl text-white flex flex-col max-h-[90vh]">
-            <h2 id="legalTitle" class="text-3xl font-black tracking-tight text-blue-500 mb-4"></h2>
-            <div id="legalContent" class="overflow-y-auto pr-4 text-slate-400 leading-relaxed space-y-4 text-sm custom-scrollbar">
-                <p>Información legal detallada...</p>
-            </div>
-            <div class="mt-8 pt-6 border-t border-[#30363d] flex justify-end">
-                <button onclick="closeModal('legalModal')" class="bg-[#30363d] hover:bg-[#484f58] text-white px-8 py-3 rounded-xl font-bold transition-all uppercase text-xs tracking-widest">Cerrar</button>
-            </div>
-        </div>
-    </div>
+<div id="uploadModal" class="modal">
+    <div class="modal-content">
+        <h2 class="modal-title">Cargar Recurso</h2>
+        
+        <div id="validationAlert" class="validation-alert"></div>
 
-    <div id="errorAlert" class="custom-alert">
-        <i data-lucide="shield-alert" class="w-5 h-5"></i>
-        <span>PIN INCORRECTO <br> ACCESO DENEGADO</span>
+        <form id="uploadForm">
+            <div class="input-group">
+                <label>Nombre del Recurso</label>
+                <input type="text" id="fileNameInput" placeholder="Ej: Backend API v2" required>
+            </div>
+
+            <div class="input-group">
+                <label>Clase de Archivo</label>
+                <select id="categorySelect" required>
+                    <option value="" disabled selected>Selecciona una opción...</option>
+                    <optgroup label="Microsoft Office">
+                        <option value="word">MS Word</option>
+                        <option value="excel">MS Excel</option>
+                        <option value="powerpoint">MS PowerPoint</option>
+                        <option value="access">MS Access</option>
+                        <option value="visio">MS Visio</option>
+                        <option value="project">MS Project</option>
+                    </optgroup>
+                    <optgroup label="MS Cloud & Power">
+                        <option value="powerbi">MS Power BI</option>
+                        <option value="automate">MS Power Automate</option>
+                        <option value="onenote">MS OneNote</option>
+                        <option value="tdo">MS To Do</option>
+                        <option value="forms">MS Forms</option>
+                        <option value="loop">MS Loop</option>
+                    </optgroup>
+                    <optgroup label="Desarrollo & Lógica">
+                        <option value="cpp">C++ / Dev++</option>
+                        <option value="pseint">PSeInt</option>
+                        <option value="html">HTML5</option>
+                        <option value="css">CSS3</option>
+                        <option value="js">JavaScript</option>
+                        <option value="python">Python</option>
+                        <option value="java">Java</option>
+                    </optgroup>
+                    <optgroup label="Multimedia & Otros">
+                        <option value="pictures">Pictures</option>
+                        <option value="mp3">MP3 / Audio</option>
+                        <option value="pdf">PDF</option>
+                        <option value="archive">ZIP / RAR</option>
+                        <option value="txt">Texto Plano</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="file-drop-area">
+                <input type="file" id="mainFileInput" required onchange="updateFileName()">
+                <div class="file-dummy">
+                    <span id="fileLabel">Seleccionar Archivo</span>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
+                <button type="submit" class="btn-primary-neon">GUARDAR EN REPO</button>
+            </div>
+        </form>
     </div>
+</div>
 
     <script src="script.js"></script>
 </body>
